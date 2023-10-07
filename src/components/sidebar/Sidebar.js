@@ -76,18 +76,18 @@ const Sidebar = () => {
     //const { Token, userRole } = useContext(AuthContext);
 
     const [activeIndex, setActiveIndex] = useState(0);
-    const [stepHeight, setStepHeight] = useState(0);
+    // const [stepHeight, setStepHeight] = useState(0);
     const sidebarRef = useRef();
-    const indicatorRef = useRef();
+    // const indicatorRef = useRef();
     const location = useLocation();
 
-    useEffect(() => {
-        setTimeout(() => {
-            const sidebarItem = sidebarRef.current.querySelector('.sidebar__menu__item');
-            indicatorRef.current.style.height = `${sidebarItem.clientHeight}px`;
-            setStepHeight(sidebarItem.clientHeight);
-        }, 50);
-    }, []);
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         const sidebarItem = sidebarRef.current.querySelector('.sidebar__menu__item');
+    //         indicatorRef.current.style.height = `${sidebarItem.clientHeight}px`;
+    //         setStepHeight(sidebarItem.clientHeight);
+    //     }, 50);
+    // }, []);
 
     // change active index
     useEffect(() => {

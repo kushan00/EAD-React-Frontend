@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { LoginUsers } from "../../services/AuthServices.js";
 import Swal from 'sweetalert2';
 import "./responsive.css";
+import Cookies from "js-cookie";
 
 const Login = () => {
 
@@ -24,15 +25,27 @@ const Login = () => {
         
         let data = await LoginUsers(formData);
         console.log("data",data)
-        if(data?.data?.status === 1)
+        if(data?.token != null )
         {
-        localStorage.setItem("token",data?.data?.data?.token);
-        localStorage.setItem("userRole",data?.data?.data?.userRole);
-        localStorage.setItem("user",data?.data?.data?.user);
-        localStorage.setItem("userID",data?.data?.data?.userID);
-        localStorage.setItem("_id",data?.data?.data?._id);
-        navigate("/");
-		window.location.reload();
+		if (Cookies.get("Train") === undefined) 
+		{
+			// navigate("/");
+			// window.location.reload();
+			Swal.fire({
+                icon: 'success',
+                title: 'Login success..!',
+                text: `Login success`,
+            })
+		}
+		else
+		{
+			Swal.fire({
+                icon: 'error',
+                title: 'Login Failed..!',
+                text: `${data?.data?.message}`,
+            })
+		}
+ 
         }
         else
         {
