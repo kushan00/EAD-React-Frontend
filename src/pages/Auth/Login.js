@@ -24,27 +24,17 @@ const Login = () => {
 		e.preventDefault();
         
         let data = await LoginUsers(formData);
-        console.log("data",data)
-        if(data?.token != null )
+        console.log("data",data?.data?.token)
+        if(data?.data?.token != null )
         {
-		if (Cookies.get("Train") === undefined) 
-		{
-			// navigate("/");
-			// window.location.reload();
+			Cookies.set('Train', data?.data?.token, { expires: 1 / 24 }); 
 			Swal.fire({
                 icon: 'success',
                 title: 'Login success..!',
                 text: `Login success`,
             })
-		}
-		else
-		{
-			Swal.fire({
-                icon: 'error',
-                title: 'Login Failed..!',
-                text: `${data?.data?.message}`,
-            })
-		}
+			navigate("/");
+			window.location.reload();
  
         }
         else
