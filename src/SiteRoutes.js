@@ -37,9 +37,9 @@ function SiteRoutes() {
             <BrowserRouter>
 
                 <Routes>
-                {/* {userLogged ? 
+                {userLogged ? 
                     (
-                    <> */}
+                    <>
                         <Route path='/' element={<AppLayout />}>
                             <Route index element={<Home />} />
                             <Route path='/profile' element={<Profile  />} />
@@ -71,7 +71,7 @@ function SiteRoutes() {
                             <Route path='/edit-order/:id' element={<EditOrder />} />
 
                         </Route>
-                    {/* </>
+                    </>
                     )
                     :
                     (
@@ -79,7 +79,7 @@ function SiteRoutes() {
                         <Route path='*' element={<Login />}/>
                         <Route path='/login' element={<Login />} />
                     </>
-                    )} */}
+                    )}
                     
                     
                 </Routes>
