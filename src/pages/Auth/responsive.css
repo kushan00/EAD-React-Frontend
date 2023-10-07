@@ -1,0 +1,38 @@
+#responsive {
+    width:22%;
+    height:40px;
+}
+
+@media (max-width:768px) {
+    #responsive {
+        width:80%;
+        height:40px;
+    }
+}
+
+
+#responsiveProfile {
+    width:50%;
+    height:40px;
+}
+
+@media (max-width:968px) {
+    #responsiveProfile {
+        width:80%;
+        height:40px;
+    }
+}
+
+#responsiveCard {
+    width:60% ;
+    border-color:black;
+    border-radius:100px;
+}
+
+@media (max-width:968px) {
+    #responsiveCard {
+        width:100% ;
+        border-color:"black";
+        border-radius:100px;
+    }
+}
