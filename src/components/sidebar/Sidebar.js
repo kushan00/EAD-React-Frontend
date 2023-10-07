@@ -97,15 +97,15 @@ const Sidebar = () => {
     }, [location]);
 
     return (
-        <div className='sidebar' style={{ backgroundColor: 'white' }} >
+        <div className='sidebar' style={{ backgroundColor: 'silver' }} >
             <div className="sidebar__logo">
-                <center style={{ color: "#1591b0", fontFamily: 'arial'}}>
+                <center style={{ color: "black", fontFamily: 'arial'}}>
                     <b>
                         Train Ticket Booking System
                     </b>
                 </center>
             </div>
-            <div style={{ backgroundColor: 'white' }} ref={sidebarRef} className="sidebar__menu">
+            <div style={{ backgroundColor: 'silver' }} ref={sidebarRef} className="sidebar__menu">
                 {/* <div
                 ref={indicatorRef}
                 className="sidebar__menu__indicator"
@@ -117,7 +117,7 @@ const Sidebar = () => {
                     sidebarNavItems.map((item, index) => (
                         <Link to={item.to} key={index}>
                             <div className={`sidebar__menu__item ${activeIndex === index ? 'active' : ''}`}
-                                style={{ color: activeIndex == index ? "#1591b0" : "black" }}>
+                                style={{ color: activeIndex == index ? "teal" : "black" }}>
                                 <div className="sidebar__menu__item__icon">
                                     {item.icon}
                                 </div>
