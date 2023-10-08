@@ -10,11 +10,11 @@ const Login = () => {
 	const navigate = useNavigate();
 
 	const [formData, setFormData] = useState({
-		email: "",
-		password: "",
+		nic : "123456789",
+		password : "12345678",
 	});
 
-	const {email, password } = formData;
+	const {nic, password } = formData;
 
 	const onChange = (e) =>
 		setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -64,10 +64,10 @@ const Login = () => {
 					<input
                        id='responsive'
                         className="form-control"
-						type="email"
-						placeholder="Email Address"
-						name="email"
-						value={email}
+						type="text"
+						placeholder="NIC"
+						name="nic"
+						value={nic}
 						onChange={(e) => onChange(e)}
 					/>
 				</div>

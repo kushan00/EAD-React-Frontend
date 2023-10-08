@@ -12,8 +12,9 @@ import UpdateItem from './pages/Staff_managment/UpdateItem';
 import AddSupplierShop from './pages/Staff_managment/AddSupplierShop';
 import UpdateSupplierShop from './pages/Staff_managment/UpdateSupplierShop';
 import ViewSupplierShops from './pages/Staff_managment/ViewSupplierShop';
-import ViewAllRequestions from './pages/HandleRequestions/ViewAllRequestions'
-import ViewPr from './pages/HandleRequestions/ViewPr'
+import ViewAllUsers from './pages/UserManagement/ViewAllUsers'
+import EditUser from './pages/UserManagement/EditUser'
+import Adduser from './pages/UserManagement/AddNewUser';
 import Profile from './pages/Auth/Profile';
 
 import ViewPayment from './pages/Payment/ViewPayment';
@@ -25,6 +26,7 @@ import EditOrder from './pages/Order_management/EditOrder'
 import PaymentSuccess from './pages/Payment/PaymentSuccess';
 import PaidDeatils from './pages/Payment/PaidDetails';
 import PaymentHistory from './pages/Payment/PaymentHistory';
+
 
 
 function SiteRoutes() {
@@ -43,7 +45,7 @@ function SiteRoutes() {
                         <Route path='/' element={<AppLayout />}>
                             <Route index element={<Home />} />
                             <Route path='/profile' element={<Profile  />} />
-                            <Route path='/user-manage' element={<ViewAllRequestions />} />
+                            <Route path='/user-manage' element={<ViewAllUsers />} />
                             <Route path='/user-manage' element={<Blank />} />
                             <Route path='/travel-manage' element={<ViewItems />} />
                             <Route path='/train-manage' element={<ViewAllOrders />} />
@@ -57,7 +59,8 @@ function SiteRoutes() {
                             <Route path='/add-suppliershop' element={<AddSupplierShop />} />
                             <Route path='/update-suppliershop/:id' element={<UpdateSupplierShop />} />
 
-                            <Route path='/accept-pr/:id' element={<ViewPr />} />
+                            <Route path='/edit-user/:id' element={<EditUser />} />
+                            <Route path='/add-user' element={<Adduser />} />
 
 
                             <Route path='/view-invoices' element={<ViewPayment/>} />

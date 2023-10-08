@@ -1,6 +1,5 @@
-import React ,{ useContext , useState , useEffect } from "react";
+import React ,{ useState , useEffect } from "react";
 import { useNavigate} from "react-router-dom";
-import AuthContext from "../../context/Auth.context";
 import { Auth } from "../../services/AuthServices"
 import {
     Card,
@@ -17,30 +16,29 @@ const Profile = () => {
 
     const navigate = useNavigate();
 
-    const { Token } = useContext(AuthContext);
-
     const [User, setUser] = useState({});
     const [UserData, setUserData] = useState({
-        fullName: "",
+        name: "",
         email: "",
-        mobileno:"+94",
+        number:"",
+        nic:""
     });
 
     
-    const { fullName, email , mobileno  } = UserData;
+    const { name, email , number  } = UserData;
 
     const onChange = (e) => {
         setUserData({ ...UserData, [e.target.name]: e.target.value });
     }
 
     const getUser = async () => {
-        const data = await Auth(Token);
-        console.log(data?.data?.data?.user);
+        const data = await Auth();
+        console.log("Auth data",data);
         setUser(data?.data?.data?.user);
         setUserData({
-            fullName: data?.data?.data?.user?.fullName,
+            name: data?.data?.data?.user?.name,
             email: data?.data?.data?.user?.email,
-            mobileno:data?.data?.data?.user?.mobileno,
+            number:data?.data?.data?.user?.number,
         });
     }
 
@@ -103,7 +101,7 @@ const Profile = () => {
     <div>
         <div>
         <center>
-            <h1 style={{fontSize:"40px" , marginBottom: "30px" , color:"white" , width:"800px"}}><b>{User?.fullName}'s Profile</b></h1>
+            <h1 style={{fontSize:"40px" , marginBottom: "30px" , color:"white" , width:"800px"}}><b>{User?.name}'s Profile</b></h1>
                 <div>
                     <Card id="responsiveCard">
                     <CardBody>
@@ -131,8 +129,8 @@ const Profile = () => {
                                 className="form-control"
                                 type="text"
                                 placeholder="Name"
-                                name="fullName"
-                                value={fullName}
+                                name="name"
+                                value={name}
                                 onChange={(e) => onChange(e)}
                                 readOnly={!updateChange ? true : false}
                             />
@@ -155,8 +153,8 @@ const Profile = () => {
                                 className="form-control"
                                 type="text"
                                 placeholder="Mobile no"
-                                name="mobileno"
-                                value={mobileno}
+                                name="number"
+                                value={number}
                                 onChange={(e) => onChange(e)}
                                 readOnly={!updateChange ? true : false}
                             />

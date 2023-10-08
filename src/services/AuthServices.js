@@ -3,29 +3,19 @@ import axios from "axios";
 import StartUrl from "../configs/Url.json";
 
 const LoginURL = StartUrl?.StartUrl + "/account/login";
-const AuthURL = StartUrl?.StartUrl + "/user/auth";
+const AuthURL = StartUrl?.StartUrl + "/Account/Profile";
 const UpdateUserURL = StartUrl?.StartUrl + "/user/update-user/";
 
 export async function LoginUsers(data){
-    // const alldata = {
-    //     email:data?.email,
-    //     password:data?.password,
-    // };
-
     const alldata = {
-      name : "string",
-      nic : "string",
-      address : "string",
-      number : "string",
-      email : "string",
-      password : "string",
-      dob : "2023-10-07T15:21:15.022Z",
-      gender : "string",
-      isActive : true,
-      userRole : "string",
-      create_at : "2023-10-07T15:21:15.022Z",
-      update_at : "2023-10-07T15:21:15.022Z"
-    }
+        nic:data?.nic,
+        password:data?.password,
+    };
+
+    // const alldata = {
+    //   nic : "123456789",
+    //   password : "12345678",
+    // }
   
     
     let result;
@@ -49,14 +39,10 @@ export async function LoginUsers(data){
 }
 
 
-export async function Auth(token){
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+export async function Auth(){
+
     let result;
-    await  axios.get(AuthURL,config)
+    await  axios.get(AuthURL)
      .then(function(data) {
          //console.log("success data",data)
          result = data;
@@ -77,9 +63,10 @@ export async function Auth(token){
 
 export async function UpdateUser(id,data) {
   const alldata = {
-      fullName: data?.fullName,
-      mobileno: data?.mobileno,
+      name: data?.name,
+      number: data?.number,
       email: data?.email,
+      nic: data?.nic,
   };
 
   return await axios.put(UpdateUserURL + id, alldata);

@@ -1,16 +1,13 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import Cookies from "js-cookie";
 
 const  Logout = ()=>  {
 
     const navigate = useNavigate();
 
     const handleSubmit = () => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("userRole");
-      localStorage.removeItem("user");
-      localStorage.removeItem("userID");
-      localStorage.removeItem("_id");
+      Cookies.remove("Train")
       window.location.reload();
       navigate("/");
     }
