@@ -11,30 +11,26 @@ function AuthContextProvider(props) {
   const [userLogged, setuserLogged] = useState(false);
 
   const checkToken = async ()=>{
-    // let data = await Auth(Cookies.get("Train"));
+    // let data = await Auth(Cookies.get("TrainLogin"));
     // if(data?.status == 200){
-      if (Cookies.get("Train") !== undefined) 
-      {
-        setuserLogged(true);
-      }
-      else{
-        setuserLogged(false);
-      }
-      console.log("data",Cookies.get("Train"));
-    
+    if (Cookies.get("TrainLogin") !== undefined) {
+      setuserLogged(true);
+    } else {
+      setuserLogged(false);
+    }
+    console.log("data", Cookies.get("TrainLogin"));
   }
 
   useEffect(() => {
 
     checkToken();
-    setToken(Cookies.get("Train"));
+    setToken(Cookies.get("TrainLogin"));
     setUserRole("admin");
     setuserLogged(true);
 
-    if (Cookies.get("Train") === undefined) 
-    {
-      Cookies.remove('Train', { path: '' })
-      setToken(Cookies.get("Train"));
+    if (Cookies.get("TrainLogin") === undefined) {
+      Cookies.remove("TrainLogin", { path: "" });
+      setToken(Cookies.get("TrainLogin"));
       setUserRole("");
       setuserLogged(false);
     }

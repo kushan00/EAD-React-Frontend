@@ -42,7 +42,9 @@ export async function LoginUsers(data){
 export async function Auth(){
 
     let result;
-    await  axios.get(AuthURL)
+    await  axios.get(AuthURL, {
+  withCredentials: true
+})
      .then(function(data) {
          //console.log("success data",data)
          result = data;

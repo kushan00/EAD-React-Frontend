@@ -7,7 +7,7 @@ const  Logout = ()=>  {
     const navigate = useNavigate();
 
     const handleSubmit = () => {
-      Cookies.remove("Train")
+      Cookies.remove("TrainLogin");
       window.location.reload();
       navigate("/");
     }

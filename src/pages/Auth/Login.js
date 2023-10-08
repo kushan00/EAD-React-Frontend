@@ -27,7 +27,7 @@ const Login = () => {
         console.log("data",data?.data?.token)
         if(data?.data?.token != null )
         {
-			Cookies.set('Train', data?.data?.token, { expires: 1 / 24 }); 
+			Cookies.set('TrainLogin', data?.data?.token, { expires: 1 / 24 }); 
 			Swal.fire({
                 icon: 'success',
                 title: 'Login success..!',
@@ -35,7 +35,7 @@ const Login = () => {
             })
 			navigate("/");
 			window.location.reload();
- 
+
         }
         else
         {
