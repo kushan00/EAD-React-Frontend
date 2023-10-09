@@ -4,7 +4,7 @@ import { CardTitle } from "reactstrap";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-import { getOrderByID } from "../../services/OrderService";
+import { getOrderByID } from "../../services/TrainService";
 
 const ViewPr = () => {
   const navigate = useNavigate();
