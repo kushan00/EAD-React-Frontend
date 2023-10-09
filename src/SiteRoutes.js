@@ -7,16 +7,19 @@ import Home from './pages/Home';
 import Logout from './pages/Auth/logout';
 import Login from './pages/Auth/Login';
 import Travelers from './pages/TravelersManagement/ViewTravelers';
-import TicketBookingManagement from './pages/TicketBookingManagement/ViewTicketBooking';
+import ViewAllReservations from './pages/TicketBookingManagement/ViewAllReservations';
+import AddReservation from './pages/TicketBookingManagement/AddReservation';
+import EditReservation from './pages/TicketBookingManagement/EditReservation';
 import ViewAllUsers from './pages/UserManagement/ViewAllUsers'
 import EditUser from './pages/UserManagement/EditUser'
 import Adduser from './pages/UserManagement/AddNewUser';
 import Profile from './pages/Auth/Profile';
-import ViewPayment from './pages/PaymentManagement/ViewPayments';
 import ViewAllTrains from './pages/TrainManagement/ViewAllTrains'
 import EditTrain from './pages/TrainManagement/EditTrain'
 import AddTrain from './pages/TrainManagement/AddTrain'
-import PaymentHistory from './pages/PaymentManagement/PaymentHistory';
+import ViewAllSchedules from './pages/ScheduleManagement/ViewAllSchedules';
+import AddSchedule from './pages/ScheduleManagement/AddSchedule';
+import EditSchedule from './pages/ScheduleManagement/EditSchedule';
 
 
 
@@ -44,14 +47,18 @@ function SiteRoutes() {
                             <Route path='/edit-train/:id' element={<EditTrain />} />
 
              
-                            <Route path='/ticket-booking-manage' element={<TicketBookingManagement />} />
+                            <Route path='/ticket-booking-manage' element={<ViewAllReservations />} />
+                            <Route path='/add-reservation' element={<AddReservation />} />                     
+                            <Route path='/edit-reservation/:id' element={<EditReservation />} />
+                            
                             <Route path='/logout' element={<Logout />} />
 
                             <Route path='/edit-user/:id' element={<EditUser />} />
                             <Route path='/add-user' element={<Adduser />} />
 
-                            <Route path='/view-invoices' element={<ViewPayment/>} />
-                            <Route path='/payment-history' element={<PaymentHistory />} />
+                            <Route path='/schedule-manage' element={<ViewAllSchedules />} />
+                            <Route path='/add-schedule' element={<AddSchedule />} />                     
+                            <Route path='/edit-schedule/:id' element={<EditSchedule />} />
 
                         </Route>
                     </>

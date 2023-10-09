@@ -41,10 +41,10 @@ const Sidebar = () => {
             section: 'train-manage'
         },
         {
-            display: 'Payments',
+            display: 'Schedule Management',
             icon: <i class='bx bxs-credit-card-front'></i>,
-            to: '/view-invoices',
-            section: 'payments'
+            to: '/schedule-manage',
+            section: 'schedule-manage'
         },
         userLogged ?
         {
