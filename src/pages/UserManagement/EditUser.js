@@ -5,7 +5,6 @@ import Select from "react-select";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { UpdateStatus } from "../../services/PRServices";
 import moment from "moment";
 
 const EditUser = () => {
