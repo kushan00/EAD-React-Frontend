@@ -20,9 +20,10 @@ import Profile from './pages/Auth/Profile';
 import ViewPayment from './pages/Payment/ViewPayment';
 import Payment from './pages/Payment/Payment';
 
-import ViewAllOrders from './pages/Order_management/ViewAllOrders'
-import ViewOrder from './pages/Order_management/ViewOrder'
-import EditOrder from './pages/Order_management/EditOrder'
+import ViewAllTrains from './pages/Train_management/ViewAllTrains'
+import EditTrain from './pages/Train_management/EditTrain'
+import AddTrain from './pages/Train_management/AddTrain'
+
 import PaymentSuccess from './pages/Payment/PaymentSuccess';
 import PaidDeatils from './pages/Payment/PaidDetails';
 import PaymentHistory from './pages/Payment/PaymentHistory';
@@ -48,7 +49,12 @@ function SiteRoutes() {
                             <Route path='/user-manage' element={<ViewAllUsers />} />
                             <Route path='/user-manage' element={<Blank />} />
                             <Route path='/travel-manage' element={<ViewItems />} />
-                            <Route path='/train-manage' element={<ViewAllOrders />} />
+
+
+                            <Route path='/train-manage' element={<ViewAllTrains />} />
+                            <Route path='/add-train' element={<AddTrain />} />                     
+                            <Route path='/edit-train/:id' element={<EditTrain />} />
+
                             <Route path='/site-details' element={<Blank />} />
                             <Route path='/ticket-booking-manage' element={<ViewSupplierShops />} />
                             <Route path='/logout' element={<Logout />} />
@@ -70,8 +76,7 @@ function SiteRoutes() {
                             <Route path='/payment-history' element={<PaymentHistory />} />
 
 
-                            <Route path='/view-order/:id' element={<ViewOrder />} />
-                            <Route path='/edit-order/:id' element={<EditOrder />} />
+                          
 
                         </Route>
                     </>

@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { UpdateStatus } from "../../services/PRServices";
-import { createOrder } from "../../services/OrderService";
 import moment from "moment";
 
 const EditUser = () => {
