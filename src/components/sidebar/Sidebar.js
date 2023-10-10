@@ -23,25 +23,25 @@ const Sidebar = () => {
             section: 'user-manage'
         },
         {
-            display: 'Traveler Management',
+            display: 'Travelers',
             icon: <i class='bx bxs-user' ></i>,
             to: '/travel-manage',
             section: 'travel-manage'
         },
         {
-            display: 'Ticket Booking Management',
+            display: 'Reservations',
             icon: <i className='bx bxs-receipt'></i>,
             to: '/ticket-booking-manage',
             section: 'ticket-booking-manage'
         },
         {
-            display: 'Train Management',
+            display: 'Trains',
             icon: <i class='bx bxs-train'></i>,
             to: '/train-manage',
             section: 'train-manage'
         },
         {
-            display: 'Schedule Management',
+            display: 'Schedules',
             icon: <i class='bx bxs-credit-card-front'></i>,
             to: '/schedule-manage',
             section: 'schedule-manage'
