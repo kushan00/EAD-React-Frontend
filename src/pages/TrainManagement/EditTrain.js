@@ -1,13 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getTrainByID } from "../../services/TrainService";
 import { updateTrain } from "../../services/TrainService";
 import { CardTitle } from "reactstrap";
-import Select from "react-select";
+
 
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import moment from "moment";
+
 
 const EditTrain = () => {
   const navigate = useNavigate();
@@ -30,7 +31,6 @@ const EditTrain = () => {
     console.log("selected train data", data.data);
 
     setData({
-      TrainId: data?.data?.trainId,
       Name: data?.data?.name,
       SeatingCapacity: data?.data?.seatingCapacity,
       FuelType: data?.data?.fuelType,

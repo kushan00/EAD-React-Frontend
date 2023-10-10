@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { getAllSchedules, } from "../../services/ScheduleService"; 
 import DataTable from "react-data-table-component";
 import reseveIcon from "../../assets/images/reserve.png";
@@ -13,46 +14,25 @@ import {
 
 
 const SelectSchedule = () => {
-  const [schedules, setSchedules] = useState([
-    // {
-    //     id:"1",
-    //     Class:"aswdasd",
-    //     EndCity:"AGBOPURA",
-    //     EndTime:"20:38",
-    //     Price:"123123",
-    //     RunBy:"asdasd",
-    //     StartCity:"ADAGALA",
-    //     StartTime:"10:38",
-    //     Train:"f1b31ab1-b460-4431-9060-4c675d420aa6",
-    //     Type:"asdasd",
-    //     Cities:['ABANPOLA', 'ADAGALA', 'AGBOPURA', 'AHANGAMA'],
-    //     isActive:"1"
-    // },
-    // {
-    //     id:"2",
-    //     Class:"aswdasd",
-    //     EndCity:"AGBOPURA",
-    //     EndTime:"20:38",
-    //     Price:"123123",
-    //     RunBy:"asdasd",
-    //     StartCity:"ADAGALA",
-    //     StartTime:"10:38",
-    //     Train:"f1b31ab1-b460-4431-9060-4c675d420aa6",
-    //     Type:"asdasd",
-    //     Cities:['ABANPOLA', 'ADAGALA', 'AGBOPURA', 'AHANGAMA'],
-    //     isActive:"1"
-    // }
-  ]);
+  const navigate = useNavigate();
+  const [schedules, setSchedules] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const getSchedules = async () => {
     try {
       setLoading(true);
-      const response = await getAllSchedules(); // Replace with your service function to get all schedules
+      const response = await getAllSchedules(); 
       console.log(response);
 
       if (response?.status === 200) {
-        setSchedules(response.data); // Assuming response.data contains the list of schedules
+        var data = [];
+        response.data.map((item)=>{
+          if(item.isActive == true)
+          {
+            data.push(item);
+          }
+        })
+        setSchedules(data); 
       }
       setLoading(false);
     } catch (error) {
@@ -65,16 +45,35 @@ const SelectSchedule = () => {
     getSchedules();
   }, []);
 
+  const gotoAddSchedule = (id,startCity,endCity,price)=>{
+    localStorage.setItem("startCity",startCity);
+    localStorage.setItem("endCity",endCity);
+    localStorage.setItem("price",price);
+    navigate(`/add-reservation/${id}`);
+  }
 
 
   const columns = [
     {
+      name: "ID",
+      selector: "id",
+      cell: (data) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Label style={{ fontSize: "16px" }}>
+            <b>{data?.id}</b>
+            <br />
+          </Label>
+        </div>
+      ),
+      sortable: true,
+    },
+    {
       name: "Start City",
-      selector: "StartCity",
+      selector: "startCity",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.StartCity}</b>
+            <b>{data?.startCity}</b>
             <br />
           </Label>
         </div>
@@ -83,11 +82,11 @@ const SelectSchedule = () => {
     },
     {
       name: "Cities",
-      selector: "Cities",
+      selector: "cities",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.Cities.map((city)=>{return `${city},\n`})}</b>
+            <b>{data?.cities?.map((city)=>{return `${city},\n`})}</b>
             <br />
           </Label>
         </div>
@@ -96,11 +95,11 @@ const SelectSchedule = () => {
     },
     {
       name: "End City",
-      selector: "EndCity",
+      selector: "endCity",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.EndCity}</b>
+            <b>{data?.endCity}</b>
             <br />
           </Label>
         </div>
@@ -109,11 +108,11 @@ const SelectSchedule = () => {
     },
     {
       name: "Price",
-      selector: "Price",
+      selector: "price",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.Price}</b>
+            <b>{data?.price}</b>
             <br />
           </Label>
         </div>
@@ -122,11 +121,11 @@ const SelectSchedule = () => {
     },
     {
       name: "Train",
-      selector: "Train",
+      selector: "train",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.Train}</b>
+            <b>{data?.train}</b>
             <br />
           </Label>
         </div>
@@ -135,11 +134,11 @@ const SelectSchedule = () => {
     },
     {
       name: "Start Time",
-      selector: "StartTime",
+      selector: "startTime",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.StartTime}</b>
+            <b>{data?.startTime}</b>
             <br />
           </Label>
         </div>
@@ -148,11 +147,11 @@ const SelectSchedule = () => {
     },
     {
       name: "End Time",
-      selector: "EndTime",
+      selector: "endTime",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.EndTime}</b>
+            <b>{data?.endTime}</b>
             <br />
           </Label>
         </div>
@@ -161,11 +160,11 @@ const SelectSchedule = () => {
     },
     {
       name: "Class",
-      selector: "Class",
+      selector: "class",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.Class}</b>
+            <b>{data?.class}</b>
             <br />
           </Label>
         </div>
@@ -174,11 +173,11 @@ const SelectSchedule = () => {
     },
     {
       name: "Type",
-      selector: "Type",
+      selector: "type",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.Type}</b>
+            <b>{data?.type}</b>
             <br />
           </Label>
         </div>
@@ -187,11 +186,11 @@ const SelectSchedule = () => {
     },
     {
       name: "Run By",
-      selector: "RunBy",
+      selector: "runBy",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.RunBy}</b>
+            <b>{data?.runBy}</b>
             <br />
           </Label>
         </div>
@@ -204,7 +203,7 @@ const SelectSchedule = () => {
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.isActive === "1" ? "Active" : "Not Active"}</b>
+            <b>{data?.isActive === true ? "Active" : "Not Active"}</b>
             <br />
           </Label>
         </div>
@@ -215,14 +214,14 @@ const SelectSchedule = () => {
       cell: (data) => (
         <div className="row">
           <div className="col">
-            <a href={`/add-reservation/${data?.id}`}>
+            <button onClick={()=>{gotoAddSchedule(data?.id,data?.startCity,data?.endCity,data?.price)}}>
               {" "}
               <img
                 src={reseveIcon}
                 style={{ height: "40px", width: "40px", cursor: "pointer" }}
                 alt="Add Resevation"
               />{" "}
-            </a>
+            </button>
           </div>
         </div>
       ),

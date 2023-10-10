@@ -4,6 +4,7 @@ import StartUrl from "../configs/Url.json";
 
 const CreateURL = StartUrl?.StartUrl + "/api/Train";
 const GetAllURL = StartUrl?.StartUrl + "/api/Train";
+const GetAllActiveURL = StartUrl?.StartUrl + "/api/Train/active";
 const UpdateURL = StartUrl?.StartUrl + "/api/Train/";
 const GetByID = StartUrl?.StartUrl + "/api/Train/";
 const DeleteURL = StartUrl?.StartUrl + "/api/Train/";
@@ -14,6 +15,23 @@ export async function getAllTrains() {
   let result;
   await axios
     .get(GetAllURL)
+    .then(function (data) {
+      result = data;
+    })
+    .catch(function (error) {
+      if (error.response) {
+        result = error.response;
+      } else if (error.request) {
+        result = error.request;
+      }
+    });
+  return result;
+}
+
+export async function getAllActiveTrains() {
+  let result;
+  await axios
+    .get(GetAllActiveURL)
     .then(function (data) {
       result = data;
     })

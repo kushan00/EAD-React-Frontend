@@ -1,10 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from "react";
-import { getAllSchedules, deleteSchedule } from "../../services/ScheduleService"; // Import your schedule-related service functions here
+import { getAllSchedules } from "../../services/ScheduleService"; // Import your schedule-related service functions here
 import DataTable from "react-data-table-component";
-import Swal from "sweetalert2";
-import editIcon from "../../assets/images/pencil.png";
-import binIcon from "../../assets/images/bin.png";
 import {
   Card,
   CardHeader,
@@ -39,33 +36,33 @@ const ViewAllSchedules = () => {
     getSchedules();
   }, []);
 
-  const removeSchedule = async (id) => {
-    console.log(id);
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const response = await deleteSchedule(id); // Replace with your service function to delete a schedule
-          console.log("Delete ", response);
+  // const removeSchedule = async (id) => {
+  //   console.log(id);
+  //   // Swal.fire({
+  //   //   title: "Are you sure?",
+  //   //   text: "You won't be able to revert this!",
+  //   //   icon: "warning",
+  //   //   showCancelButton: true,
+  //   //   confirmButtonColor: "#3085d6",
+  //   //   cancelButtonColor: "#d33",
+  //   //   confirmButtonText: "Yes, delete it!",
+  //   // }).then(async (result) => {
+  //   //   if (result.isConfirmed) {
+  //   //     try {
+  //   //       const response = await deleteSchedule(id); // Replace with your service function to delete a schedule
+  //   //       console.log("Delete ", response);
 
-          if (response?.status === 200) {
-            Swal.fire("Deleted!", "The schedule has been deleted.", "success");
-            getSchedules();
-          }
-        } catch (error) {
-          console.log(error);
-          Swal.fire("Error", "Failed to delete the schedule.", "error");
-        }
-      }
-    });
-  };
+  //   //       if (response?.status === 200) {
+  //   //         Swal.fire("Deleted!", "The schedule has been deleted.", "success");
+  //   //         getSchedules();
+  //   //       }
+  //   //     } catch (error) {
+  //   //       console.log(error);
+  //   //       Swal.fire("Error", "Failed to delete the schedule.", "error");
+  //   //     }
+  //   //   }
+  //   // });
+  // };
 
   const columns = [
     {
@@ -83,11 +80,11 @@ const ViewAllSchedules = () => {
     },
     {
       name: "Start City",
-      selector: "StartCity",
+      selector: "startCity",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.StartCity}</b>
+            <b>{data?.startCity}</b>
             <br />
           </Label>
         </div>
@@ -96,11 +93,11 @@ const ViewAllSchedules = () => {
     },
     {
       name: "Cities",
-      selector: "Cities",
+      selector: "cities",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.Cities.map((city)=>{return `${city},\n`})}</b>
+            <b>{data?.cities?.map((city)=>{return `${city},\n`})}</b>
             <br />
           </Label>
         </div>
@@ -109,11 +106,11 @@ const ViewAllSchedules = () => {
     },
     {
       name: "End City",
-      selector: "EndCity",
+      selector: "endCity",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.EndCity}</b>
+            <b>{data?.endCity}</b>
             <br />
           </Label>
         </div>
@@ -122,11 +119,11 @@ const ViewAllSchedules = () => {
     },
     {
       name: "Price",
-      selector: "Price",
+      selector: "price",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.Price}</b>
+            <b>{data?.price}</b>
             <br />
           </Label>
         </div>
@@ -135,11 +132,11 @@ const ViewAllSchedules = () => {
     },
     {
       name: "Train",
-      selector: "Train",
+      selector: "train",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.Train}</b>
+            <b>{data?.train}</b>
             <br />
           </Label>
         </div>
@@ -148,11 +145,11 @@ const ViewAllSchedules = () => {
     },
     {
       name: "Start Time",
-      selector: "StartTime",
+      selector: "startTime",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.StartTime}</b>
+            <b>{data?.startTime}</b>
             <br />
           </Label>
         </div>
@@ -161,11 +158,11 @@ const ViewAllSchedules = () => {
     },
     {
       name: "End Time",
-      selector: "EndTime",
+      selector: "endTime",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.EndTime}</b>
+            <b>{data?.endTime}</b>
             <br />
           </Label>
         </div>
@@ -174,11 +171,11 @@ const ViewAllSchedules = () => {
     },
     {
       name: "Class",
-      selector: "Class",
+      selector: "class",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.Class}</b>
+            <b>{data?.class}</b>
             <br />
           </Label>
         </div>
@@ -187,11 +184,11 @@ const ViewAllSchedules = () => {
     },
     {
       name: "Type",
-      selector: "Type",
+      selector: "type",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.Type}</b>
+            <b>{data?.type}</b>
             <br />
           </Label>
         </div>
@@ -200,11 +197,11 @@ const ViewAllSchedules = () => {
     },
     {
       name: "Run By",
-      selector: "RunBy",
+      selector: "runBy",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.RunBy}</b>
+            <b>{data?.runBy}</b>
             <br />
           </Label>
         </div>
@@ -217,39 +214,39 @@ const ViewAllSchedules = () => {
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "14px" }}>
-            <b>{data?.isActive === "1" ? "Active" : "Not Active"}</b>
+            <b>{data?.isActive === true ? "Active" : "Not Active"}</b>
             <br />
           </Label>
         </div>
       ),
       sortable: true,
     },
-    {
-      cell: (data) => (
-        <div className="row">
-          <div className="col">
-            <a href={`/edit-schedule/${data?.id}`}>
-              {" "}
-              <img
-                src={editIcon}
-                style={{ height: "25px", width: "25px", cursor: "pointer" }}
-                alt="Edit"
-              />{" "}
-            </a>
-          </div>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <div className="col">
-            <a onClick={() => removeSchedule(data?.id)}>
-              <img
-                src={binIcon}
-                style={{ height: "25px", width: "25px", cursor: "pointer" }}
-                alt="Delete"
-              />
-            </a>
-          </div>
-        </div>
-      ),
-    },
+    // {
+    //   cell: (data) => (
+    //     <div className="row">
+    //       <div className="col">
+    //         <a href={`/edit-schedule/${data?.id}`}>
+    //           {" "}
+    //           <img
+    //             src={editIcon}
+    //             style={{ height: "25px", width: "25px", cursor: "pointer" }}
+    //             alt="Edit"
+    //           />{" "}
+    //         </a>
+    //       </div>
+    //       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    //       <div className="col">
+    //         <a onClick={() => removeSchedule(data?.id)}>
+    //           <img
+    //             src={binIcon}
+    //             style={{ height: "25px", width: "25px", cursor: "pointer" }}
+    //             alt="Delete"
+    //           />
+    //         </a>
+    //       </div>
+    //     </div>
+    //   ),
+    // },
   ];
 
   return (
@@ -260,7 +257,7 @@ const ViewAllSchedules = () => {
             <CardTitle
               style={{ color: "black", fontSize: "30px", float: "left" }}
             >
-              <b>Reservations</b>
+              <b>Schedules</b>
             </CardTitle>
             <CardTitle
               style={{ color: "black", fontSize: "30px", float: "right" }}

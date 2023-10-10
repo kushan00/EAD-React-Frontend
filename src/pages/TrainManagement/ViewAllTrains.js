@@ -1,5 +1,7 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/alt-text */
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import {
   Badge,
@@ -8,15 +10,7 @@ import {
   CardTitle,
   CardBody,
   Label,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Input,
-  Form,
 } from "reactstrap";
-
-import moment from "moment";
 import Swal from "sweetalert2";
 import { getAllTrains } from "../../services/TrainService";
 import { deleteTrain } from "../../services/TrainService";
@@ -24,11 +18,10 @@ import editIcon from "../../assets/images/pencil.png";
 import binIcon from "../../assets/images/bin.png";
 
 const ViewAllTrains = () => {
-  const navigate = useNavigate();
+
 
   const [PRDetails, setTrainDetails] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [openModal, setopenModal] = useState(false);
 
   const getTrains = async () => {
     try {
@@ -37,7 +30,7 @@ const ViewAllTrains = () => {
       console.log(data);
       let array = [];
       data?.data?.data?.Requsition?.map((item) => {
-        if (item?.status == "pending") {
+        if (item?.status === "pending") {
           array.push(item);
         }
       });
@@ -64,10 +57,7 @@ const ViewAllTrains = () => {
     getTrains();
   }, []);
 
-  const routeToViewPage = (e) => {
-    e.preventDefault();
-    navigate("/add-item");
-  };
+
 
   const removeTrain = async (id) => {
     console.log(id);
@@ -81,6 +71,7 @@ const ViewAllTrains = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
+        console.log(id);
         let data = deleteTrain(id);
         console.log("Delete ", data);
         Swal.fire("Deleted!", "Your file has been deleted.", "success");

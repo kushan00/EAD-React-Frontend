@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { all } from "axios";
 import StartUrl from "../configs/Url.json";
 
 const CreateURL = StartUrl?.StartUrl + "/api/Reservation"; // Adjust the URL for creating a reservation
@@ -24,18 +24,20 @@ export async function getAllReservations() {
   return result;
 }
 
-export async function createReservation(data,scheduleID) {
+export async function createReservation(data,scheduleID,bookedTime,reserveTime,totalPrice) {
   const alldata = {
-    bookingId: data?.bookingId,
     user: data?.user,
     schedule: scheduleID,
-    bookedTime: data?.bookedTime,
-    reserveTime: data?.reserveTime,
+    bookedTime: bookedTime,
+    reserveTime: reserveTime,
     startCity: data?.startCity,
     endCity: data?.endCity,
     paxCount: data?.paxCount,
-    status: data?.status,
+    totalPrice:totalPrice
   };
+  console.warn("data",data)
+  console.warn("all data",alldata);
+
 
   let result;
   await axios

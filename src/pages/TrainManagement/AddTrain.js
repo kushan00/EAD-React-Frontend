@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, } from "react";
 import { createTrain } from "../../services/TrainService";
 import { CardTitle } from "reactstrap";
-import Select from "react-select";
+
 
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import moment from "moment";
+
 
 const AddTrain = () => {
   const navigate = useNavigate();

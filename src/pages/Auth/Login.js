@@ -24,7 +24,7 @@ const Login = () => {
 		e.preventDefault();
         
         let data = await LoginUsers(formData);
-        console.log("data",data?.data?.token)
+        console.log("data",data?.data)
         if(data?.data?.token != null )
         {
 			Cookies.set('TrainLogin', data?.data?.token, { expires: 1 / 24 }); 
@@ -33,8 +33,18 @@ const Login = () => {
                 title: 'Login success..!',
                 text: `Login success`,
             })
-			navigate("/");
-			window.location.reload();
+			if(data?.data?.role === "traveler")
+			{
+				navigate("/traveler-booking");
+				window.location.reload();
+			}
+			else
+			{
+				navigate("/");
+				window.location.reload();
+			}
+			
+			
 
         }
         else

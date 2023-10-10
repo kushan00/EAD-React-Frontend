@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from "react";
 import { createSchedule } from "../../services/ScheduleService"; // Import your schedule-related service function here
-import { getAllTrains } from "../../services/TrainService"; // Import your schedule-related service function here
+import { getAllActiveTrains } from "../../services/TrainService"; // Import your schedule-related service function here
 import { CardTitle } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -206,7 +206,7 @@ const AddSchedule = () => {
   useEffect(() => {
     const fetchTrains = async () => {
       try {
-        const trainOptions = await getAllTrains();
+        const trainOptions = await getAllActiveTrains();
         console.log("Trains", trainOptions?.data);
 
         // Transform the data to create options
