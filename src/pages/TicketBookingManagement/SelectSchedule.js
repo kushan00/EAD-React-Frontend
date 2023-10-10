@@ -1,22 +1,48 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from "react";
-import { getAllSchedules, deleteSchedule } from "../../services/ScheduleService"; // Import your schedule-related service functions here
+import { getAllSchedules, } from "../../services/ScheduleService"; 
 import DataTable from "react-data-table-component";
-import Swal from "sweetalert2";
-import editIcon from "../../assets/images/pencil.png";
-import binIcon from "../../assets/images/bin.png";
+import reseveIcon from "../../assets/images/reserve.png";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardBody,
-  Label,
-} from "reactstrap";
+    Card,
+    CardHeader,
+    CardTitle,
+    CardBody,
+    Label,
+  } from "reactstrap";
 
 
 
-const ViewAllSchedules = () => {
-  const [schedules, setSchedules] = useState([]);
+const SelectSchedule = () => {
+  const [schedules, setSchedules] = useState([
+    // {
+    //     id:"1",
+    //     Class:"aswdasd",
+    //     EndCity:"AGBOPURA",
+    //     EndTime:"20:38",
+    //     Price:"123123",
+    //     RunBy:"asdasd",
+    //     StartCity:"ADAGALA",
+    //     StartTime:"10:38",
+    //     Train:"f1b31ab1-b460-4431-9060-4c675d420aa6",
+    //     Type:"asdasd",
+    //     Cities:['ABANPOLA', 'ADAGALA', 'AGBOPURA', 'AHANGAMA'],
+    //     isActive:"1"
+    // },
+    // {
+    //     id:"2",
+    //     Class:"aswdasd",
+    //     EndCity:"AGBOPURA",
+    //     EndTime:"20:38",
+    //     Price:"123123",
+    //     RunBy:"asdasd",
+    //     StartCity:"ADAGALA",
+    //     StartTime:"10:38",
+    //     Train:"f1b31ab1-b460-4431-9060-4c675d420aa6",
+    //     Type:"asdasd",
+    //     Cities:['ABANPOLA', 'ADAGALA', 'AGBOPURA', 'AHANGAMA'],
+    //     isActive:"1"
+    // }
+  ]);
   const [loading, setLoading] = useState(false);
 
   const getSchedules = async () => {
@@ -39,48 +65,9 @@ const ViewAllSchedules = () => {
     getSchedules();
   }, []);
 
-  const removeSchedule = async (id) => {
-    console.log(id);
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const response = await deleteSchedule(id); // Replace with your service function to delete a schedule
-          console.log("Delete ", response);
 
-          if (response?.status === 200) {
-            Swal.fire("Deleted!", "The schedule has been deleted.", "success");
-            getSchedules();
-          }
-        } catch (error) {
-          console.log(error);
-          Swal.fire("Error", "Failed to delete the schedule.", "error");
-        }
-      }
-    });
-  };
 
   const columns = [
-    {
-      name: "ID",
-      selector: "id",
-      cell: (data) => (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <Label style={{ fontSize: "16px" }}>
-            <b>{data?.id}</b>
-            <br />
-          </Label>
-        </div>
-      ),
-      sortable: true,
-    },
     {
       name: "Start City",
       selector: "StartCity",
@@ -228,23 +215,13 @@ const ViewAllSchedules = () => {
       cell: (data) => (
         <div className="row">
           <div className="col">
-            <a href={`/edit-schedule/${data?.id}`}>
+            <a href={`/add-reservation/${data?.id}`}>
               {" "}
               <img
-                src={editIcon}
-                style={{ height: "25px", width: "25px", cursor: "pointer" }}
-                alt="Edit"
+                src={reseveIcon}
+                style={{ height: "40px", width: "40px", cursor: "pointer" }}
+                alt="Add Resevation"
               />{" "}
-            </a>
-          </div>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <div className="col">
-            <a onClick={() => removeSchedule(data?.id)}>
-              <img
-                src={binIcon}
-                style={{ height: "25px", width: "25px", cursor: "pointer" }}
-                alt="Delete"
-              />
             </a>
           </div>
         </div>
@@ -260,14 +237,7 @@ const ViewAllSchedules = () => {
             <CardTitle
               style={{ color: "black", fontSize: "30px", float: "left" }}
             >
-              <b>Reservations</b>
-            </CardTitle>
-            <CardTitle
-              style={{ color: "black", fontSize: "30px", float: "right" }}
-            >
-              <a href={`/add-schedule`} className="btn btn-dark">
-                Add New Schedule
-              </a>
+              <b>Select Schedule to Reservation</b>
             </CardTitle>
           </CardHeader>
           <CardBody>
@@ -284,4 +254,4 @@ const ViewAllSchedules = () => {
 };
 
 
-export default ViewAllSchedules;
+export default SelectSchedule;

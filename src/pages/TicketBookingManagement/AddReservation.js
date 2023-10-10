@@ -3,10 +3,11 @@ import { createReservation } from "../../services/ReservationService"; // Import
 import { CardTitle } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import moment from "moment";
+import { useParams } from "react-router-dom";
 
 const AddReservation = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const [data, setData] = useState({
     Type: "Manual", 
@@ -20,11 +21,11 @@ const AddReservation = () => {
       [name]: value,
     }));
   };
-
+  console.log("add id",id)
   const AddNewReservation = async (e) => {
     e.preventDefault();
     console.log(data);
-    let newdata = await createReservation(data); // Replace with your service function to create a reservation
+    let newdata = await createReservation(data,id); // Replace with your service function to create a reservation
     console.log("Add reservation data", newdata);
     if (newdata?.status === 201) {
       Swal.fire({

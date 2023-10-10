@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useState, useEffect } from "react";
 import { createSchedule } from "../../services/ScheduleService"; // Import your schedule-related service function here
 import { getAllTrains } from "../../services/TrainService"; // Import your schedule-related service function here
@@ -238,16 +239,30 @@ const AddSchedule = () => {
     }));
   };
 
+  const handleStartCityChange = (selectedOption) => {
+    setData((prevData) => ({
+      ...prevData,
+      "startCity": selectedOption?.label,
+    }));
+  };
+
+  const handleEndCityChange = (selectedOption) => {
+    setData((prevData) => ({
+      ...prevData,
+      "endCity": selectedOption?.label,
+    }));
+  };
+
   const AddNewSchedule = async (e) => {
     e.preventDefault();
 
-    setData((prevData) => ({
-      ...prevData,
-      "Cities": selected,
-    }));
+    var citiesArray = [];
+    selected.map((city)=>{
+      citiesArray.push(city.label);
+    })
 
     console.log(data);
-    let newdata = await createSchedule(data); // Replace with your service function to create a schedule
+    let newdata = await createSchedule(data,citiesArray); 
     console.log("Add schedule data", newdata);
     if (newdata?.status === 201) {
       Swal.fire({
@@ -298,6 +313,21 @@ const AddSchedule = () => {
                   value={data?.train}
                   onChange={handleTrainChange}
                   options={trains}
+                />
+
+                <label style={{ marginTop: "15px" }}>Start City</label>
+                <Select
+                  value={data?.startCity}
+                  onChange={handleStartCityChange}
+                  options={options}
+                />
+
+
+                <label style={{ marginTop: "15px" }}>End City</label>
+                <Select
+                  value={data?.endCity}
+                  onChange={handleEndCityChange}
+                  options={options}
                 />
 
                 <label style={{ marginTop: "15px" }}>Cities</label>

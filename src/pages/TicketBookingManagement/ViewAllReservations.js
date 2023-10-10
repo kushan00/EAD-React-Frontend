@@ -1,5 +1,6 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/alt-text */
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import {
   Badge,
@@ -8,14 +9,7 @@ import {
   CardTitle,
   CardBody,
   Label,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Input,
-  Form,
 } from "reactstrap";
-import moment from "moment";
 import Swal from "sweetalert2";
 
 import { getAllReservations } from "../../services/ReservationService";
@@ -25,11 +19,9 @@ import editIcon from "../../assets/images/pencil.png";
 import binIcon from "../../assets/images/bin.png";
 
 const ViewAllReservations = () => {
-  const navigate = useNavigate();
 
   const [reservationDetails, setReservationDetails] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
 
   const getReservations = async () => {
     try {
@@ -64,10 +56,6 @@ const ViewAllReservations = () => {
     getReservations();
   }, []);
 
-  const routeToViewPage = (e) => {
-    e.preventDefault();
-    navigate("/add-reservation");
-  };
 
   const removeReservation = async (id) => {
     console.log(id);
@@ -197,7 +185,7 @@ const ViewAllReservations = () => {
             <CardTitle
               style={{ color: "black", fontSize: "30px", float: "right" }}
             >
-              <a href={`/add-reservation`} className="btn btn-dark">
+              <a href={`/select-schedule`} className="btn btn-dark">
                 Add New Reservation
               </a>
             </CardTitle>

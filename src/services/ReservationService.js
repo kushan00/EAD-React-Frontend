@@ -24,11 +24,11 @@ export async function getAllReservations() {
   return result;
 }
 
-export async function createReservation(data) {
+export async function createReservation(data,scheduleID) {
   const alldata = {
     bookingId: data?.bookingId,
     user: data?.user,
-    schedule: data?.schedule,
+    schedule: scheduleID,
     bookedTime: data?.bookedTime,
     reserveTime: data?.reserveTime,
     startCity: data?.startCity,

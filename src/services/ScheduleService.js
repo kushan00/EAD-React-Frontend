@@ -25,13 +25,12 @@ export async function getAllSchedules() {
   return result;
 }
 
-export async function createSchedule(data) {
+export async function createSchedule(data,selected) {
 
   console.log("Data", data);
   const alldata = {
-    Id: data?.Id,
     StartCity: data?.startCity,
-    Cities: data?.Cities,
+    Cities: selected,
     EndCity: data?.endCity,
     Price: data?.price,
     Train: data?.Train,
@@ -40,7 +39,6 @@ export async function createSchedule(data) {
     Class: data?.class,
     Type: data?.type,
     RunBy: data?.runBy,
-    IsActive: data?.IsActive,
   };
 
   console.log("all data", alldata);

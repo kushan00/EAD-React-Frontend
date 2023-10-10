@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AuthContext from "./context/Auth.context";
 import { useContext  } from "react";
 import AppLayout from './components/layout/AppLayout';
-import Blank from './pages/Blank';
 import Home from './pages/Home';
 import Logout from './pages/Auth/logout';
 import Login from './pages/Auth/Login';
@@ -20,6 +19,7 @@ import AddTrain from './pages/TrainManagement/AddTrain'
 import ViewAllSchedules from './pages/ScheduleManagement/ViewAllSchedules';
 import AddSchedule from './pages/ScheduleManagement/AddSchedule';
 import EditSchedule from './pages/ScheduleManagement/EditSchedule';
+import SelectSchedule from './pages/TicketBookingManagement/SelectSchedule';
 
 
 
@@ -48,7 +48,8 @@ function SiteRoutes() {
 
              
                             <Route path='/ticket-booking-manage' element={<ViewAllReservations />} />
-                            <Route path='/add-reservation' element={<AddReservation />} />                     
+                            <Route path='/select-schedule' element={<SelectSchedule />} />  
+                            <Route path='/add-reservation/:id' element={<AddReservation />} />                     
                             <Route path='/edit-reservation/:id' element={<EditReservation />} />
                             
                             <Route path='/logout' element={<Logout />} />
