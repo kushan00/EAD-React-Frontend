@@ -8,10 +8,13 @@ import moment from "moment";
 const AddReservation = () => {
   const navigate = useNavigate();
 
-  const [data, setData] = useState({});
-
+  const [data, setData] = useState({
+    Type: "Manual", 
+  });
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
     setData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -98,7 +101,7 @@ const AddReservation = () => {
                   className="form-control"
                   name="bookedTime"
                   value={data.bookedTime}
-                  type="text"
+                  type="date"
                   onChange={handleChange}
                 />
 
@@ -107,7 +110,7 @@ const AddReservation = () => {
                   className="form-control"
                   name="reserveTime"
                   value={data.reserveTime}
-                  type="text"
+                  type="date"
                   onChange={handleChange}
                 />
 

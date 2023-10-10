@@ -26,21 +26,24 @@ export async function getAllSchedules() {
 }
 
 export async function createSchedule(data) {
+
+  console.log("Data", data);
   const alldata = {
     Id: data?.Id,
-    StartCity: data?.StartCity,
+    StartCity: data?.startCity,
     Cities: data?.Cities,
-    EndCity: data?.EndCity,
-    Price: data?.Price,
+    EndCity: data?.endCity,
+    Price: data?.price,
     Train: data?.Train,
-    StartTime: data?.StartTime,
-    EndTime: data?.EndTime,
-    Class: data?.Class,
-    Type: data?.Type,
-    RunBy: data?.RunBy,
+    StartTime: data?.startTime,
+    EndTime: data?.endTime,
+    Class: data?.class,
+    Type: data?.type,
+    RunBy: data?.runBy,
     IsActive: data?.IsActive,
   };
 
+  console.log("all data", alldata);
   let result;
   await axios
     .post(CreateURL, alldata)
