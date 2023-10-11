@@ -21,6 +21,9 @@ import AddSchedule from './pages/ScheduleManagement/AddSchedule';
 import EditSchedule from './pages/ScheduleManagement/EditSchedule';
 import SelectSchedule from './pages/TicketBookingManagement/SelectSchedule';
 import TravellerBooking from './pages/TravellerBooking';
+import Navbar from './components/Navbar/Navbar';
+import TravelerProfile from './pages/TravelerProfile';
+import AddUserReservation from './pages/AddUserResevation';
 
 
 function SiteRoutes() {
@@ -61,8 +64,12 @@ function SiteRoutes() {
                             <Route path='/add-schedule' element={<AddSchedule />} />                     
                             <Route path='/edit-schedule/:id' element={<EditSchedule />} />                            
 
-                        </Route>
+                        </Route>                   
+                        
                         <Route path='/traveler-booking' element={<TravellerBooking />} />
+                        <Route path='/traveler-profile' element={<TravelerProfile />} />
+                        <Route path='/add-user-reservation/:id' element={<AddUserReservation />} />  
+                        
                     </>
                     )
                     :

@@ -28,6 +28,7 @@ const Login = () => {
         if(data?.data?.token != null )
         {
 			Cookies.set('TrainLogin', data?.data?.token, { expires: 1 / 24 }); 
+			Cookies.set('userID', data?.data?.id, { expires: 1 / 24 });
 			Swal.fire({
                 icon: 'success',
                 title: 'Login success..!',

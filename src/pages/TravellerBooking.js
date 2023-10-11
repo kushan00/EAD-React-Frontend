@@ -1,9 +1,20 @@
+/* eslint-disable array-callback-return */
 import React , {useState} from 'react'
 import './search.css'
 import Select from "react-select";
 import { searchSchedules } from '../services/ScheduleService';
 import { useNavigate } from 'react-router-dom';
 import Cookies from "js-cookie";
+import Navbar from '../components/Navbar/Navbar';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardBody,
+  Label,
+} from "reactstrap";
+import reseveIcon from "../assets/images/reserve.png";
+import DataTable from "react-data-table-component";
 
 const options = [
     { label: "ABANPOLA", value: "3" },
@@ -197,39 +208,185 @@ const TravellerBooking = () => {
 
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-      Cookies.remove("TrainLogin");
-      window.location.reload();
-      navigate("/");
-    }
-
     const [startCity, setstartCity] = useState('');
     const [endCity, setendCity] = useState('');
     const [bookTime, setbookTime] = useState('');
+    const [schedules, setSchedules] = useState([]);
+    const [SearchView, setSearchView] = useState(false);
   
     const handleSearch = async (e) => {
         e.preventDefault();
-      // Implement your search logic here
       console.log('Searching...');
       console.log(startCity,endCity,bookTime)
       let data = await searchSchedules(startCity?.label,endCity?.label,bookTime)
       console.log("schedules",data);
+      // var newdata = [];
+      // data.data.map((item)=>{
+      //   if(item.isActive === true)
+      //   {
+      //     newdata.push(item);
+      //   }
+      // });
+      setSchedules(data.data);
+      setSearchView(true);
     };
 
     const handleStartCityChange = (selectedOption) => {
-        setstartCity(selectedOption);
-      };
+      setstartCity(selectedOption);
+    };
 
-      const handleEndCityChange = (selectedOption) => {
-        setendCity(selectedOption);
-      };
+    const handleEndCityChange = (selectedOption) => {
+      setendCity(selectedOption);
+    };
+
+    const gotoAddSchedule = (id,startCity,endCity,price)=>{
+      localStorage.setItem("startCity",startCity);
+      localStorage.setItem("endCity",endCity);
+      localStorage.setItem("price",price);
+      navigate(`/add-user-reservation/${id}`);
+    }
+
+      
+  const columns = [
+    {
+      name: "Start City",
+      selector: "startCity",
+      cell: (data) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Label style={{ fontSize: "14px" }}>
+            <b>{data?.startCity}</b>
+            <br />
+          </Label>
+        </div>
+      ),
+      sortable: true,
+    },
+    {
+      name: "Cities",
+      selector: "cities",
+      cell: (data) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Label style={{ fontSize: "14px" }}>
+            <b>{data?.cities?.map((city)=>{return `${city},\n`})}</b>
+            <br />
+          </Label>
+        </div>
+      ),
+      sortable: true,
+    },
+    {
+      name: "End City",
+      selector: "endCity",
+      cell: (data) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Label style={{ fontSize: "14px" }}>
+            <b>{data?.endCity}</b>
+            <br />
+          </Label>
+        </div>
+      ),
+      sortable: true,
+    },
+    {
+      name: "Price",
+      selector: "price",
+      cell: (data) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Label style={{ fontSize: "14px" }}>
+            <b>{data?.price}</b>
+            <br />
+          </Label>
+        </div>
+      ),
+      sortable: true,
+    },
+    {
+      name: "Start Time",
+      selector: "startTime",
+      cell: (data) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Label style={{ fontSize: "14px" }}>
+            <b>{data?.startTime}</b>
+            <br />
+          </Label>
+        </div>
+      ),
+      sortable: true,
+    },
+    {
+      name: "End Time",
+      selector: "endTime",
+      cell: (data) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Label style={{ fontSize: "14px" }}>
+            <b>{data?.endTime}</b>
+            <br />
+          </Label>
+        </div>
+      ),
+      sortable: true,
+    },
+    {
+      name: "Class",
+      selector: "class",
+      cell: (data) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Label style={{ fontSize: "14px" }}>
+            <b>{data?.class}</b>
+            <br />
+          </Label>
+        </div>
+      ),
+      sortable: true,
+    },
+    {
+      name: "Type",
+      selector: "type",
+      cell: (data) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Label style={{ fontSize: "14px" }}>
+            <b>{data?.type}</b>
+            <br />
+          </Label>
+        </div>
+      ),
+      sortable: true,
+    },
+    {
+      name: "Run By",
+      selector: "runBy",
+      cell: (data) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Label style={{ fontSize: "14px" }}>
+            <b>{data?.runBy}</b>
+            <br />
+          </Label>
+        </div>
+      ),
+      sortable: true,
+    },
+    {
+      cell: (data) => (
+        <div className="row">
+          <div className="col">
+            <button onClick={()=>{gotoAddSchedule(data?.id,data?.startCity,data?.endCity,data?.price)}}>
+              {" "}
+              <img
+                src={reseveIcon}
+                style={{ height: "40px", width: "40px", cursor: "pointer" }}
+                alt="Add Resevation"
+              />{" "}
+            </button>
+          </div>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
+      <Navbar/>
+      <br></br>
 
       <center><h2 style={{
         color: 'white',
@@ -247,15 +404,6 @@ const TravellerBooking = () => {
         width: '1250px'
       }}>Hi, Welcome To Online Train Booking System</h2></center>
       <br></br>
-
-      <button 
-            style={{width:"150px"}}
-            type="submit" 
-            className="btn btn-success" 
-            onClick={()=>handleLogout()}
-        >
-        Logout
-        </button>
 
 
       <div className="search-container">
@@ -289,7 +437,33 @@ const TravellerBooking = () => {
       </div>
     </div>
 
-      
+    {SearchView == true 
+    ?
+    <div style={{ marginTop: "70px", marginBottom: "70px" }}>
+      <div style={{ margin: "10px" }}>
+        <Card>
+          <CardHeader>
+            <CardTitle
+              style={{ color: "black", fontSize: "30px", float: "left" }}
+            >
+              <b>Select Schedule to Reservation</b>
+            </CardTitle>
+          </CardHeader>
+          <CardBody>
+            <DataTable
+              data={schedules}
+              columns={columns}
+            />
+          </CardBody>
+        </Card>
+      </div>
+    </div>
+    :
+    <>
+
+    </>
+    }
+
      
 
 
