@@ -18,7 +18,7 @@ const Navbar = () => {
     <nav className="bg-dark p-4" style={{ border: '1px solid #fff', boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)' }}>
       <div className="container d-flex justify-content-between align-items-center">
         <div class="mr-4">
-          <a href="/">
+          <a href="/traveler-booking">
             <img
               src={Logo}
               alt="Logo"
