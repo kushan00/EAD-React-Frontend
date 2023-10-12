@@ -203,6 +203,9 @@ const AddSchedule = () => {
   const [trains, setTrains] = useState([]);
   const [selected, setSelected] = useState([]);
 
+  const [startCity, setStartCity] = useState({});
+  const [endCity, setEndCity] = useState({});
+
   useEffect(() => {
     const fetchTrains = async () => {
       try {
@@ -240,6 +243,7 @@ const AddSchedule = () => {
   };
 
   const handleStartCityChange = (selectedOption) => {
+    setStartCity(selectedOption);
     setData((prevData) => ({
       ...prevData,
       "startCity": selectedOption?.label,
@@ -247,6 +251,7 @@ const AddSchedule = () => {
   };
 
   const handleEndCityChange = (selectedOption) => {
+    setEndCity(selectedOption);
     setData((prevData) => ({
       ...prevData,
       "endCity": selectedOption?.label,
@@ -317,7 +322,7 @@ const AddSchedule = () => {
 
                 <label style={{ marginTop: "15px" }}>Start City</label>
                 <Select
-                  value={data?.startCity}
+                  value={startCity}
                   onChange={handleStartCityChange}
                   options={options}
                 />
@@ -325,7 +330,7 @@ const AddSchedule = () => {
 
                 <label style={{ marginTop: "15px" }}>End City</label>
                 <Select
-                  value={data?.endCity}
+                  value={endCity}
                   onChange={handleEndCityChange}
                   options={options}
                 />

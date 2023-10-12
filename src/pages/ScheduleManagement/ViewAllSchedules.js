@@ -1,16 +1,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from "react";
-import { getAllSchedules } from "../../services/ScheduleService"; // Import your schedule-related service functions here
-import DataTable from "react-data-table-component";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardBody,
-  Label,
-} from "reactstrap";
-
-
+  getAllSchedules,
+  inactiveSchedule,
+  activeSchedule,
+} from "../../services/ScheduleService"; // Import your schedule-related service functions here
+import DataTable from "react-data-table-component";
+import { Card, CardHeader, CardTitle, CardBody, Label } from "reactstrap";
+import Swal from "sweetalert2";
+import editIcon from "../../assets/images/pencil.png";
+import binIcon from "../../assets/images/bin.png";
 
 const ViewAllSchedules = () => {
   const [schedules, setSchedules] = useState([]);
@@ -36,48 +35,89 @@ const ViewAllSchedules = () => {
     getSchedules();
   }, []);
 
-  // const removeSchedule = async (id) => {
-  //   console.log(id);
-  //   // Swal.fire({
-  //   //   title: "Are you sure?",
-  //   //   text: "You won't be able to revert this!",
-  //   //   icon: "warning",
-  //   //   showCancelButton: true,
-  //   //   confirmButtonColor: "#3085d6",
-  //   //   cancelButtonColor: "#d33",
-  //   //   confirmButtonText: "Yes, delete it!",
-  //   // }).then(async (result) => {
-  //   //   if (result.isConfirmed) {
-  //   //     try {
-  //   //       const response = await deleteSchedule(id); // Replace with your service function to delete a schedule
-  //   //       console.log("Delete ", response);
+  const deactivateSchedule = async (id) => {
+    console.log(id);
+    Swal.fire({
+      title: "Are you sure to deactivate this schedule ?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, deactivate it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await inactiveSchedule(id); // Replace with your service function to deactivate a schedule
+          console.log("deactivate ", response);
 
-  //   //       if (response?.status === 200) {
-  //   //         Swal.fire("Deleted!", "The schedule has been deleted.", "success");
-  //   //         getSchedules();
-  //   //       }
-  //   //     } catch (error) {
-  //   //       console.log(error);
-  //   //       Swal.fire("Error", "Failed to delete the schedule.", "error");
-  //   //     }
-  //   //   }
-  //   // });
-  // };
+          if (response?.status === 404) {
+            Swal.fire(
+              "Sorry!",
+              "This schedule has existing reservations",
+              "warning"
+            );
+            getSchedules();
+          }
+
+          if (response?.status === 200) {
+            Swal.fire(
+              "Deactivated!",
+              "The schedule has been deactivated.",
+              "success"
+            );
+            getSchedules();
+          }
+        } catch (error) {
+          console.log(error);
+          Swal.fire("Error", "Failed to deactivate the schedule.", "error");
+        }
+      }
+    });
+  };
+
+  const activateSchedule = async (id) => {
+    console.log(id);
+    Swal.fire({
+      title: "Are you sure activate this schedule ?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, active it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await activeSchedule(id); // Replace with your service function to delete a schedule
+          console.log("active ", response);
+
+          if (response?.status === 200) {
+            Swal.fire("Deleted!", "The schedule has activated.", "success");
+            getSchedules();
+          }
+        } catch (error) {
+          console.log(error);
+          Swal.fire("Error", "Failed to delete the schedule.", "error");
+        }
+      }
+    });
+  };
 
   const columns = [
-    {
-      name: "ID",
-      selector: "id",
-      cell: (data) => (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <Label style={{ fontSize: "16px" }}>
-            <b>{data?.id}</b>
-            <br />
-          </Label>
-        </div>
-      ),
-      sortable: true,
-    },
+    // {
+    //   name: "ID",
+    //   selector: "id",
+    //   cell: (data) => (
+    //     <div style={{ display: "flex", flexDirection: "column" }}>
+    //       <Label style={{ fontSize: "16px" }}>
+    //         <b>{data?.id}</b>
+    //         <br />
+    //       </Label>
+    //     </div>
+    //   ),
+    //   sortable: true,
+    // },
     {
       name: "Start City",
       selector: "startCity",
@@ -91,19 +131,19 @@ const ViewAllSchedules = () => {
       ),
       sortable: true,
     },
-    {
-      name: "Cities",
-      selector: "cities",
-      cell: (data) => (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <Label style={{ fontSize: "14px" }}>
-            <b>{data?.cities?.map((city)=>{return `${city},\n`})}</b>
-            <br />
-          </Label>
-        </div>
-      ),
-      sortable: true,
-    },
+    // {
+    //   name: "Cities",
+    //   selector: "cities",
+    //   cell: (data) => (
+    //     <div style={{ display: "flex", flexDirection: "column" }}>
+    //       <Label style={{ fontSize: "14px" }}>
+    //         <b>{data?.cities?.map((city)=>{return `${city},\n`})}</b>
+    //         <br />
+    //       </Label>
+    //     </div>
+    //   ),
+    //   sortable: true,
+    // },
     {
       name: "End City",
       selector: "endCity",
@@ -130,19 +170,19 @@ const ViewAllSchedules = () => {
       ),
       sortable: true,
     },
-    {
-      name: "Train",
-      selector: "train",
-      cell: (data) => (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <Label style={{ fontSize: "14px" }}>
-            <b>{data?.train}</b>
-            <br />
-          </Label>
-        </div>
-      ),
-      sortable: true,
-    },
+    // {
+    //   name: "Train",
+    //   selector: "train",
+    //   cell: (data) => (
+    //     <div style={{ display: "flex", flexDirection: "column" }}>
+    //       <Label style={{ fontSize: "14px" }}>
+    //         <b>{data?.train}</b>
+    //         <br />
+    //       </Label>
+    //     </div>
+    //   ),
+    //   sortable: true,
+    // },
     {
       name: "Start Time",
       selector: "startTime",
@@ -221,32 +261,48 @@ const ViewAllSchedules = () => {
       ),
       sortable: true,
     },
-    // {
-    //   cell: (data) => (
-    //     <div className="row">
-    //       <div className="col">
-    //         <a href={`/edit-schedule/${data?.id}`}>
-    //           {" "}
-    //           <img
-    //             src={editIcon}
-    //             style={{ height: "25px", width: "25px", cursor: "pointer" }}
-    //             alt="Edit"
-    //           />{" "}
-    //         </a>
-    //       </div>
-    //       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    //       <div className="col">
-    //         <a onClick={() => removeSchedule(data?.id)}>
-    //           <img
-    //             src={binIcon}
-    //             style={{ height: "25px", width: "25px", cursor: "pointer" }}
-    //             alt="Delete"
-    //           />
-    //         </a>
-    //       </div>
-    //     </div>
-    //   ),
-    // },
+    {
+      cell: (data) => (
+        <div className="row">
+          <div className="col">
+            <a href={`/edit-schedule/${data?.id}`}>
+              {" "}
+              <img
+                src={editIcon}
+                style={{ height: "25px", width: "25px", cursor: "pointer" }}
+                alt="Edit"
+              />{" "}
+            </a>
+          </div>        
+        </div>
+      ),
+    },
+
+    {
+      cell: (data) => (
+        <div className="row">          
+          {data?.isActive === true ? (
+            <div className="col-auto">
+              <button
+                className="btn btn-danger"
+                onClick={() => deactivateSchedule(data?.id)}
+              >
+                Deactivate
+              </button>
+            </div>
+          ) : (
+            <div className="col-auto">
+              <button
+                className="btn btn-success"
+                onClick={() => activateSchedule(data?.id)}
+              >
+                Activate
+              </button>
+            </div>
+          )}
+        </div>
+      ),
+    },
   ];
 
   return (
@@ -279,6 +335,5 @@ const ViewAllSchedules = () => {
     </div>
   );
 };
-
 
 export default ViewAllSchedules;
