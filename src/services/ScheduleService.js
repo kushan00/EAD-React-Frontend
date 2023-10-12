@@ -8,6 +8,8 @@ const UpdateURL = StartUrl?.StartUrl + "/Schedule/";
 const GetByID = StartUrl?.StartUrl + "/Schedule/";
 const DeleteURL = StartUrl?.StartUrl + "/Schedule/";
 const SearchSchedule = StartUrl?.StartUrl + "/Schedule/Search";
+const ActiveURL = StartUrl?.StartUrl + "/Schedule/enable/";
+const DeactivateURL = StartUrl?.StartUrl + "/Schedule/disable/";
 
 export async function getAllSchedules() {
   let result;
@@ -131,10 +133,28 @@ export async function getScheduleByID(id) {
   return result;
 }
 
-export async function deleteSchedule(id) {
+export async function inactiveSchedule(id) {
   let result;
   await axios
-    .delete(DeleteURL + id)
+    .put(DeactivateURL + id)
+    .then(function (data) {
+      result = data;
+    })
+    .catch(function (error) {
+      if (error.response) {
+        result = error.response;
+      } else if (error.request) {
+        result = error.request;
+      }
+    });
+  return result;
+}
+
+
+export async function activeSchedule(id) {
+  let result;
+  await axios
+    .put(ActiveURL + id)
     .then(function (data) {
       result = data;
     })
