@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import {
   Badge,
@@ -8,51 +8,26 @@ import {
   CardTitle,
   CardBody,
   Label,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Input,
-  Form,
 } from "reactstrap";
 
-import moment from "moment";
-import Swal from "sweetalert2";
-import { getAllTrains } from "../../services/TrainService";
-import { deleteTrain } from "../../services/TrainService";
-import editIcon from "../../assets/images/pencil.png";
-import binIcon from "../../assets/images/bin.png";
+import { getAllTravelers } from "../../services/UserServices";
 
-const ViewAllTrains = () => {
+const ViewAllTravelers = () => {
   const navigate = useNavigate();
 
-  const [PRDetails, setTrainDetails] = useState([]);
+  const [UserDetails, setAllUserDetails] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [openModal, setopenModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredUserDetails, setFilteredUserDetails] = useState(UserDetails); // Initialize with all data
+  const [isActiveFilter, setIsActiveFilter] = useState("all"); // 'all', 'active', or 'inactive'
 
-  const getTrains = async () => {
+  const getTravelers = async () => {
     try {
       setLoading(true);
-      let data = await getAllTrains();
-      console.log(data);
-      let array = [];
-      data?.data?.data?.Requsition?.map((item) => {
-        if (item?.status == "pending") {
-          array.push(item);
-        }
-      });
+      let data = await getAllTravelers();
 
-      let newData = data?.data?.map((pr) => {
-        return {
-          trainId: pr?.trainId,
-          name: pr?.name,
-          seatingCapacity: pr?.seatingCapacity,
-          fuelType: pr?.fuelType,
-          model: pr?.model,
-          _id: pr?.id,
-        };
-      });
-      setTrainDetails(newData);
+      setAllUserDetails(data.data);
+      setFilteredUserDetails(data.data);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -61,61 +36,49 @@ const ViewAllTrains = () => {
   };
 
   useEffect(() => {
-    getTrains();
+    getTravelers();
   }, []);
 
-  const routeToViewPage = (e) => {
-    e.preventDefault();
-    navigate("/add-item");
+  // Function to handle search input changes
+  const handleSearchInputChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    applyFilters(query, isActiveFilter);
   };
 
-  const removeTrain = async (id) => {
-    console.log(id);
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        let data = deleteTrain(id);
-        console.log("Delete ", data);
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
-        getTrains();
-      }
+  // Function to handle radio button changes for active/inactive filtering
+  const handleActiveRadioChange = (value) => {
+    setIsActiveFilter(value);
+    applyFilters(searchQuery, value);
+  };
+
+  // Function to filter data based on search query, active/inactive filter, and user role filter
+  const applyFilters = (query, isActiveFilter) => {
+    const filteredData = UserDetails.filter((user) => {
+      const includesQuery =
+        user.name.toLowerCase().includes(query.toLowerCase()) ||
+        user.nic.toLowerCase().includes(query.toLowerCase());
+      const isActive =
+        isActiveFilter === "all" ||
+        (isActiveFilter === "active" && user.isActive) ||
+        (isActiveFilter === "inactive" && !user.isActive);
+      return includesQuery && isActive;
     });
+
+    setFilteredUserDetails(filteredData);
   };
 
   const columns = [
     {
       name: (
-        <Badge color="info" style={{ fontSize: "16px" }}>
-          Train Id
-        </Badge>
-      ),
-      selector: "trainId",
-      cell: (data) => (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <Label style={{ fontSize: "16px" }}>
-            <b>{data?.trainId}</b>
-            <br />
-          </Label>
-        </div>
-      ),
-    },
-    {
-      name: (
-        <Badge color="info" style={{ fontSize: "16px" }}>
-          Train Name
+        <Badge color="info" style={{ fontSize: "20px" }}>
+          Full Name
         </Badge>
       ),
       selector: "name",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <Label style={{ fontSize: "16px" }}>
+          <Label style={{ fontSize: "20px" }}>
             <b>{data?.name}</b>
             <br />
           </Label>
@@ -124,16 +87,15 @@ const ViewAllTrains = () => {
     },
     {
       name: (
-        <Badge color="info" style={{ fontSize: "16px" }}>
-          Delivery Details
+        <Badge color="info" style={{ fontSize: "20px" }}>
+          NIC
         </Badge>
       ),
-      selector: "seatingCapacity",
-
+      selector: "nic",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <Label style={{ fontSize: "16px" }}>
-            <b>{data.seatingCapacity}</b>
+          <Label style={{ fontSize: "20px" }}>
+            <b>{data?.nic}</b>
             <br />
           </Label>
         </div>
@@ -141,16 +103,15 @@ const ViewAllTrains = () => {
     },
     {
       name: (
-        <Badge color="info" style={{ fontSize: "16px" }}>
-          Delivery Details
+        <Badge color="info" style={{ fontSize: "20px" }}>
+          Mobile Number
         </Badge>
       ),
-      selector: "fuelType",
-
+      selector: "userRole",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <Label style={{ fontSize: "16px" }}>
-            <b>{data.fuelType}</b>
+          <Label style={{ fontSize: "20px" }}>
+            <b>{data.number}</b>
             <br />
           </Label>
         </div>
@@ -158,43 +119,31 @@ const ViewAllTrains = () => {
     },
     {
       name: (
-        <Badge color="info" style={{ fontSize: "16px" }}>
-          Delivery Details
+        <Badge color="info" style={{ fontSize: "20px" }}>
+          Active
         </Badge>
       ),
-      selector: "model",
-
+      selector: "address",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <Label style={{ fontSize: "16px" }}>
-            <b>{data.model}</b>
+          <Label style={{ fontSize: "20px" }}>
+            <b>{data.isActive ? "Active" : "Inactive"}</b>
             <br />
           </Label>
         </div>
       ),
     },
-
     {
+      name: (
+        <Badge color="info" style={{ fontSize: "20px" }}>
+          Actions
+        </Badge>
+      ),
       cell: (data) => (
-        <div className="row">
-          <div className="col">
-            <a href={`/edit-train/${data?._id}`}>
-              {" "}
-              <img
-                src={editIcon}
-                style={{ height: "25px", width: "25px", cursor: "pointer" }}
-              />{" "}
-            </a>
-          </div>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <div className="col">
-            <a onClick={() => removeTrain(data?._id)}>
-              <img
-                src={binIcon}
-                style={{ height: "25px", width: "25px", cursor: "pointer" }}
-              />
-            </a>
-          </div>
+        <div>
+          <a href={`/user-profile/${data?.id}`} className="btn btn-info">
+            View
+          </a>
         </div>
       ),
     },
@@ -206,21 +155,74 @@ const ViewAllTrains = () => {
         <Card>
           <CardHeader>
             <CardTitle
-              style={{ color: "black", fontSize: "30px", float: "left" }}
+              style={{ color: "black", fontSize: "35px", float: "left" }}
             >
-              <b>Trains</b>
+              <b>All Travelers</b>
             </CardTitle>
             <CardTitle
               style={{ color: "black", fontSize: "30px", float: "right" }}
             >
-              <a href={`/add-train`} className="btn btn-dark">
-                Add New Train
+              <a href={`/add-user`} className="btn btn-dark">
+                Add Traveler
               </a>
             </CardTitle>
           </CardHeader>
           <CardBody>
+            <div>
+              <div className="radio-group-horizontal">
+                <label className="radio-label">Search:</label>
+                <input
+                  type="text"
+                  placeholder="Search Travelers..."
+                  value={searchQuery}
+                  onChange={handleSearchInputChange}
+                  style={{
+                    padding: "8px",
+                    border: "1px solid #ccc",
+                    borderRadius: "5px",
+                    width: "20%",
+                    marginBottom: "10px",
+                  }}
+                />
+                <label className="radio-label">Filter by :</label>
+                <div className="radio-item">
+                  <input
+                    type="radio"
+                    id="all"
+                    name="isActiveFilter"
+                    value="all"
+                    checked={isActiveFilter === "all"}
+                    onChange={() => handleActiveRadioChange("all")}
+                  />
+                  <label htmlFor="all">All</label>
+                </div>
+                <div className="radio-item">
+                  <input
+                    type="radio"
+                    id="active"
+                    name="isActiveFilter"
+                    value="active"
+                    checked={isActiveFilter === "active"}
+                    onChange={() => handleActiveRadioChange("active")}
+                  />
+                  <label htmlFor="active">Active</label>
+                </div>
+                <div className="radio-item">
+                  <input
+                    type="radio"
+                    id="inactive"
+                    name="isActiveFilter"
+                    value="Inactive"
+                    checked={isActiveFilter === "Inactive"}
+                    onChange={() => handleActiveRadioChange("Inactive")}
+                  />
+                  <label htmlFor="inactive">Inactive</label>
+                </div>
+              </div>
+            </div>
+
             <DataTable
-              data={PRDetails}
+              data={filteredUserDetails}
               columns={columns}
               progressPending={loading}
             />
@@ -231,4 +233,4 @@ const ViewAllTrains = () => {
   );
 };
 
-export default ViewAllTrains;
+export default ViewAllTravelers;

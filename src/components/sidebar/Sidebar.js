@@ -17,7 +17,7 @@ const Sidebar = () => {
             section: ''
         },
         {
-            display: 'User Management',
+            display: 'Users',
             icon: <i className='bx bx-user'></i>,
             to: '/user-manage',
             section: 'user-manage'

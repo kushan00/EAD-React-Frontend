@@ -1,19 +1,24 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Auth, DeleteProfile } from "../../services/AuthServices";
+import { useNavigate, useParams } from "react-router-dom";
+import { DeleteProfile } from "../../services/AuthServices";
 import Swal from "sweetalert2";
-import "./responsive.css";
-import { ValidateUserUpdate } from "./Validation";
-import { UpdateProfile } from "../../services/AuthServices";
 import Cookies from "js-cookie";
+import {
+  deleteUserByID,
+  disableUserByID,
+  enableUserByID,
+  getUserByID,
+} from "../../services/UserServices";
 
-const Profile = () => {
+const UserProfile = () => {
   const navigate = useNavigate();
+  const id = useParams();
 
   const [User, setUser] = useState({});
 
   const getUser = async () => {
-    const data = await Auth();
+    const data = await getUserByID(id.id);
+    console.log("Auth data", data.data);
     setUser(data?.data);
   };
 
@@ -22,16 +27,62 @@ const Profile = () => {
   }, []);
 
   async function updateUser() {
-    navigate("/edit-user/" + User.id, { state: User });
+    navigate("/edit-user/" + User?.id, { state: User });
   }
 
   async function deleteProfile() {
     try {
-      if (!window.confirm("Are you sure you wish to delete this account?")) {
+      if (!window.confirm("Are you sure you want to delete this account?")) {
         return;
       }
 
-      var result = await DeleteProfile(User._id);
+      var result = await deleteUserByID(User.id);
+
+      if (result?.status === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "Successful!",
+          text: "Account deleted...!",
+        });
+        navigate("/user-manage");
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error(err);
+      alert(err);
+    }
+  }
+
+  async function enableProfile() {
+    try {
+      if (!window.confirm("Are you sure you want to activate this account?")) {
+        return;
+      }
+
+      var result = await enableUserByID(User.id);
+
+      if (result?.status === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "Successful!",
+          text: "Account activated...!",
+        });
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error(err);
+      alert(err);
+    }
+  }
+  async function disableProfile() {
+    try {
+      if (
+        !window.confirm("Are you sure you want to deactivate this account?")
+      ) {
+        return;
+      }
+
+      var result = await disableUserByID(User.id);
 
       if (result?.status === 200) {
         Swal.fire({
@@ -39,8 +90,6 @@ const Profile = () => {
           title: "Successful!",
           text: "Account deactivated...!",
         });
-        Cookies.remove("TrainLogin");
-        navigate("/");
         window.location.reload();
       }
     } catch (err) {
@@ -121,10 +170,26 @@ const Profile = () => {
                 </tr>
                 <tr key={7}>
                   <td>
+                    <h3>Active</h3>
+                  </td>
+                  <td>
+                    <h3>{User?.isActive ? "Active" : "Inactive"}</h3>
+                  </td>
+                </tr>
+                <tr key={8}>
+                  <td>
                     <h3>User Type</h3>
                   </td>
                   <td>
                     <h3>{User?.userRole}</h3>
+                  </td>
+                </tr>
+                <tr key={9}>
+                  <td>
+                    <h3>Created at</h3>
+                  </td>
+                  <td>
+                    <h3>{User?.createdTime}</h3>
                   </td>
                 </tr>
               </tbody>
@@ -134,17 +199,35 @@ const Profile = () => {
           <h1>Loading...</h1>
         )}
         <div className="main-center">
-          <button
-            className="btn btn-warning account-button"
-            onClick={updateUser}
-          >
+          <button className="btn btn-info account-button" onClick={updateUser}>
             Edit
           </button>
+          {User?.userRole === "Traveler" ? (
+            <>
+              {User?.isActive ? (
+                <button
+                  className="btn btn-warning account-button"
+                  onClick={disableProfile}
+                >
+                  Deactivate
+                </button>
+              ) : (
+                <button
+                  className="btn btn-success account-button"
+                  onClick={enableProfile}
+                >
+                  Activate
+                </button>
+              )}
+            </>
+          ) : (
+            ""
+          )}
           <button
             className="btn btn-danger account-button"
             onClick={deleteProfile}
           >
-            Deactivate
+            Delete
           </button>
         </div>
       </div>
@@ -152,4 +235,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default UserProfile;

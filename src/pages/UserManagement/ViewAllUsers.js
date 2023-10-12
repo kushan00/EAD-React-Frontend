@@ -1,173 +1,233 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import {
-    Badge,
-    Card,
-    CardHeader,
-    CardTitle,
-    CardBody,
-    Label,
+  Badge,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardBody,
+  Label,
 } from "reactstrap";
 
-import moment from 'moment';
-
-import { getAllUsers , deleteUserByID} from '../../services/UserServices';
-import Swal from "sweetalert2";
-
-
+import { getAllUsers } from "../../services/UserServices";
 
 const ViewAllUsers = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const [UserDetails, setAllUserDetails] = useState([]);
-    const [loading, setLoading] = useState(false);
+  const [UserDetails, setAllUserDetails] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredUserDetails, setFilteredUserDetails] = useState(UserDetails); // Initialize with all data
+  const [userRoleFilter, setUserRoleFilter] = useState("all"); // 'all', 'Traveler', 'Agent', or 'Back_Office'
 
-    const getUsers = async () => {
-        try {
-            setLoading(true);
-            let data = await getAllUsers();
-            console.log("all users", data.data);
+  const getUsers = async () => {
+    try {
+      setLoading(true);
+      let data = await getAllUsers();
 
-   
-            let newData = data?.data?.map((user) => {
-                return {
-                    name: user?.name,
-                    email: user?.email,
-                    gender: user?.gender,
-                    address: user?.address,
-                    number: user?.number,
-                    nic: user?.nic, 
-                    id :user?.id,
-                    userRole:user?.userRole
-                }
-            })
-            setAllUserDetails(newData);
-            setLoading(false);
-        } catch (error) {
-            console.log(error);
-            setLoading(false);
-        }
+      setAllUserDetails(data.data);
+      setFilteredUserDetails(data.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
     }
+  };
 
-    useEffect(() => {
-        getUsers();
-    }, [])
+  useEffect(() => {
+    getUsers();
+  }, []);
 
+  // Function to handle search input changes
+  const handleSearchInputChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    applyFilters(query, userRoleFilter);
+  };
 
+  // Function to handle radio button changes for user role filtering
+  const handleUserRoleRadioChange = (value) => {
+    setUserRoleFilter(value);
+    applyFilters(searchQuery, value);
+  };
 
+  // Function to filter data based on search query, active/inactive filter, and user role filter
+  const applyFilters = (query, userRoleFilter) => {
+    const filteredData = UserDetails.filter((user) => {
+      const includesQuery =
+        user.name.toLowerCase().includes(query.toLowerCase()) ||
+        user.nic.toLowerCase().includes(query.toLowerCase());
+      const isUserRoleMatch =
+        userRoleFilter === "all" || user.userRole === userRoleFilter;
+      return includesQuery && isUserRoleMatch;
+    });
 
-    const deletUser = async (id) => {
-        const newdata = await deleteUserByID(id);
-        if (newdata?.status === 200) {
-            Swal.fire({
-              icon: "success",
-              title: "Successful!",
-              text: "User De;ete Success!",
-            });
-            getUsers();
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Delete Failed!",
-            });
-          }
-      };
+    setFilteredUserDetails(filteredData);
+  };
 
-
-    const columns = [
-
-        {
-            name: (<Badge color="info" style={{ fontSize: "16px" }} >Full Name</Badge>),
-            selector: "name",
-            cell: (data) => (
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                    <Label style={{ fontSize: "16px" }}><b>{data?.name}</b><br /></Label>
-                </div>
-            ),
-        },
-        {
-            name: (<Badge color="info" style={{ fontSize: "16px" }} >NIC</Badge>),
-            selector: "nic",
-            cell: (data) => (
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                    <Label style={{ fontSize: "16px" }}><b>{data?.nic}</b><br /></Label>
-                </div>
-            ),
-        },
-        {
-            name: (<Badge color="info" style={{ fontSize: "16px" }} >Email</Badge>),
-            selector: "email",
-            cell: (data) => (
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                    <Label style={{ fontSize: "16px" }}><b>{data.email}</b><br /></Label>
-                </div>
-            ),
-        },
-        {
-            name: (<Badge color="info" style={{ fontSize: "16px" }} >Number</Badge>),
-            selector: "number",
-            cell: (data) => (
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                    <Label style={{ fontSize: "16px" }}><b>{data.number}</b><br /></Label>
-                </div>
-            ),
-        },
-       
-        {
-            name: (<Badge color="info" style={{ fontSize: "16px" }} >Address</Badge>),
-            selector: "address",
-            cell: (data) => (
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                    <Label style={{ fontSize: "16px" }}><b>{data.address}</b><br /></Label>
-                </div>
-            ),
-        },     
-        {
-            name: (<Badge color="info" style={{ fontSize: "16px" }} >User Role</Badge>),
-            selector: "userRole",
-            cell: (data) => (
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                    <Label style={{ fontSize: "16px" }}><b>{data.userRole}</b><br /></Label>
-                </div>
-            ),
-        },    
-        {
-            name: (<Badge color="info" style={{ fontSize: "16px" }} >Actions</Badge>),
-            cell: (data) => (
-                <div>
-                    <a href={`/edit-user/${data?.id}`} className="btn btn-dark">Edit</a>   
-                    &nbsp;&nbsp;&nbsp;&nbsp;   
-                    <button onClick={()=>{deletUser(data?.id)}}className="btn btn-danger">Delete</button>               
-                </div>
-            ),
-        },
-    ];
-
-
-    return (
-        <div style={{ marginTop: "70px", marginBottom: "70px" }}>
-            <div style={{ margin: "10px" }}>
-                <Card >
-                    <CardHeader >
-                        <CardTitle style={{ color: "black", fontSize: "30px", float: "left" }}><b>All users</b></CardTitle>
-                        <CardTitle style={{ color: "black", fontSize: "30px", float: "right" }}><a href={`/add-user`} className="btn btn-dark">Add User</a></CardTitle>
-                    </CardHeader>
-                    <CardBody >
-                        <DataTable
-                            data={UserDetails}
-                            columns={columns}
-                            progressPending={loading}
-                        />
-                    </CardBody>
-                </Card>
-            </div>
-
+  const columns = [
+    {
+      name: (
+        <Badge color="info" style={{ fontSize: "20px" }}>
+          Full Name
+        </Badge>
+      ),
+      selector: "name",
+      cell: (data) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Label style={{ fontSize: "20px" }}>
+            <b>{data?.name}</b>
+            <br />
+          </Label>
         </div>
+      ),
+    },
+    {
+      name: (
+        <Badge color="info" style={{ fontSize: "20px" }}>
+          NIC
+        </Badge>
+      ),
+      selector: "nic",
+      cell: (data) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Label style={{ fontSize: "20px" }}>
+            <b>{data?.nic}</b>
+            <br />
+          </Label>
+        </div>
+      ),
+    },
+    {
+      name: (
+        <Badge color="info" style={{ fontSize: "20px" }}>
+          Email
+        </Badge>
+      ),
+      selector: "address",
+      cell: (data) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Label style={{ fontSize: "20px" }}>
+            <b>{data.email}</b>
+            <br />
+          </Label>
+        </div>
+      ),
+    },
+    {
+      name: (
+        <Badge color="info" style={{ fontSize: "20px" }}>
+          User Role
+        </Badge>
+      ),
+      selector: "userRole",
+      cell: (data) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Label style={{ fontSize: "20px" }}>
+            <b>{data.userRole}</b>
+            <br />
+          </Label>
+        </div>
+      ),
+    },
+    {
+      name: (
+        <Badge color="info" style={{ fontSize: "20px" }}>
+          Actions
+        </Badge>
+      ),
+      cell: (data) => (
+        <div>
+          <a href={`/user-profile/${data?.id}`} className="btn btn-info">
+            View
+          </a>
+        </div>
+      ),
+    },
+  ];
 
-    );
-
+  return (
+    <div style={{ marginTop: "70px", marginBottom: "70px" }}>
+      <div style={{ margin: "10px" }}>
+        <Card>
+          <CardHeader>
+            <CardTitle
+              style={{ color: "black", fontSize: "35px", float: "left" }}
+            >
+              <b>All Users</b>
+            </CardTitle>
+            <CardTitle
+              style={{ color: "black", fontSize: "30px", float: "right" }}
+            >
+              <a href={`/add-user`} className="btn btn-dark">
+                Add User
+              </a>
+            </CardTitle>
+          </CardHeader>
+          <CardBody>
+            <div>
+              <div className="radio-group-horizontal">
+                <label className="radio-label">Search:</label>
+                <input
+                  type="text"
+                  placeholder="Search users..."
+                  value={searchQuery}
+                  onChange={handleSearchInputChange}
+                  style={{
+                    padding: "8px",
+                    border: "1px solid #ccc",
+                    borderRadius: "5px",
+                    width: "20%",
+                    marginBottom: "10px",
+                  }}
+                />
+                <label className="radio-label">Filter by :</label>
+                <div className="radio-item">
+                  <input
+                    type="radio"
+                    id="allRoles"
+                    name="userRoleFilter"
+                    value="all"
+                    checked={userRoleFilter === "all"}
+                    onChange={() => handleUserRoleRadioChange("all")}
+                  />
+                  <label htmlFor="allRoles">All Roles</label>
+                </div>
+                <div className="radio-item">
+                  <input
+                    type="radio"
+                    id="backOffice"
+                    name="userRoleFilter"
+                    value="Back_Office"
+                    checked={userRoleFilter === "Back_Office"}
+                    onChange={() => handleUserRoleRadioChange("Back_Office")}
+                  />
+                  <label htmlFor="backOffice">Back_Office</label>
+                </div>
+                <div className="radio-item">
+                  <input
+                    type="radio"
+                    id="agent"
+                    name="userRoleFilter"
+                    value="Agent"
+                    checked={userRoleFilter === "Agent"}
+                    onChange={() => handleUserRoleRadioChange("Agent")}
+                  />
+                  <label htmlFor="agent">Agent</label>
+                </div>
+              </div>
+            </div>
+            <DataTable
+              data={filteredUserDetails}
+              columns={columns}
+              progressPending={loading}
+            />
+          </CardBody>
+        </Card>
+      </div>
+    </div>
+  );
 };
 
 export default ViewAllUsers;

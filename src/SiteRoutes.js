@@ -22,8 +22,8 @@ import EditSchedule from './pages/ScheduleManagement/EditSchedule';
 import SelectSchedule from './pages/TicketBookingManagement/SelectSchedule';
 import TravellerBooking from './pages/TravellerBooking';
 import Navbar from './components/Navbar/Navbar';
-import TravelerProfile from './pages/TravelerProfile';
 import AddUserReservation from './pages/AddUserResevation';
+import UserProfile from './pages/UserManagement/UserProfile';
 
 
 function SiteRoutes() {
@@ -32,60 +32,67 @@ function SiteRoutes() {
     const { userLogged } = useContext(AuthContext);
     console.log(" userLogged ",userLogged);
     return (
-        <div>
-            <BrowserRouter>
+      <div>
+        <BrowserRouter>
+          <Routes>
+            {userLogged ? (
+              <>
+                <Route path="/" element={<AppLayout />}>
+                  <Route index element={<Home />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/user-manage" element={<ViewAllUsers />} />
+                  <Route path="/travel-manage" element={<Travelers />} />
+                  <Route path="/user-profile/:id" element={<UserProfile />} />
+ 
+                  <Route path="/train-manage" element={<ViewAllTrains />} />
+                  <Route path="/add-train" element={<AddTrain />} />
+                  <Route path="/edit-train/:id" element={<EditTrain />} />
 
-                <Routes>
-                {userLogged ? 
-                    (
-                    <>
-                        <Route path='/' element={<AppLayout />}>
-                            <Route index element={<Home />} />
-                            <Route path='/profile' element={<Profile  />} />
-                            <Route path='/user-manage' element={<ViewAllUsers />} />
-                            <Route path='/travel-manage' element={<Travelers />} />
+                  <Route
+                    path="/ticket-booking-manage"
+                    element={<ViewAllReservations />}
+                  />
+                  <Route path="/select-schedule" element={<SelectSchedule />} />
+                  <Route
+                    path="/add-reservation/:id"
+                    element={<AddReservation />}
+                  />
+                  <Route
+                    path="/edit-reservation/:id"
+                    element={<EditReservation />}
+                  />
 
-                            <Route path='/train-manage' element={<ViewAllTrains />} />
-                            <Route path='/add-train' element={<AddTrain />} />                     
-                            <Route path='/edit-train/:id' element={<EditTrain />} />
+                  <Route path="/logout" element={<Logout />} />
 
-             
-                            <Route path='/ticket-booking-manage' element={<ViewAllReservations />} />
-                            <Route path='/select-schedule' element={<SelectSchedule />} />  
-                            <Route path='/add-reservation/:id' element={<AddReservation />} />                     
-                            <Route path='/edit-reservation/:id' element={<EditReservation />} />
-                            
-                            <Route path='/logout' element={<Logout />} />
+                  <Route path="/edit-user/:id" element={<EditUser />} />
+                  <Route path="/add-user" element={<Adduser />} />
 
-                            <Route path='/edit-user/:id' element={<EditUser />} />
-                            <Route path='/add-user' element={<Adduser />} />
+                  <Route
+                    path="/schedule-manage"
+                    element={<ViewAllSchedules />}
+                  />
+                  <Route path="/add-schedule" element={<AddSchedule />} />
+                  <Route path="/edit-schedule/:id" element={<EditSchedule />} />
+                </Route>
 
-                            <Route path='/schedule-manage' element={<ViewAllSchedules />} />
-                            <Route path='/add-schedule' element={<AddSchedule />} />                     
-                            <Route path='/edit-schedule/:id' element={<EditSchedule />} />                            
-
-                        </Route>                   
-                        
-                        <Route path='/traveler-booking' element={<TravellerBooking />} />
-                        <Route path='/traveler-profile' element={<TravelerProfile />} />
-                        <Route path='/add-user-reservation/:id' element={<AddUserReservation />} />  
-                        
-                    </>
-                    )
-                    :
-                    (
-                    <>
-                        <Route path='*' element={<Login />}/>
-                        <Route path='/login' element={<Login />} />
-                    </>
-                    )
-                    }
-                    
-                    
-                </Routes>
-            </BrowserRouter>
-        </div>
-
+                <Route
+                  path="/traveler-booking"
+                  element={<TravellerBooking />}
+                />
+                <Route
+                  path="/add-user-reservation/:id"
+                  element={<AddUserReservation />}
+                />
+              </>
+            ) : (
+              <>
+                <Route path="*" element={<Login />} />
+                <Route path="/login" element={<Login />} />
+              </>
+            )}
+          </Routes>
+        </BrowserRouter>
+      </div>
     );
 }
 
