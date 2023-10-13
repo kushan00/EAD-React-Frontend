@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { DeleteProfile } from "../../services/AuthServices";
 import Swal from "sweetalert2";
-import Cookies from "js-cookie";
 import {
   deleteUserByID,
   disableUserByID,
@@ -31,71 +29,93 @@ const UserProfile = () => {
   }
 
   async function deleteProfile() {
-    try {
-      if (!window.confirm("Are you sure you want to delete this account?")) {
-        return;
-      }
+    Swal.fire({
+      title: "Are you sure want to delete this account?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          var result = await deleteUserByID(User.id);
 
-      var result = await deleteUserByID(User.id);
-
-      if (result?.status === 200) {
-        Swal.fire({
-          icon: "success",
-          title: "Successful!",
-          text: "Account deleted...!",
-        });
-        navigate("/user-manage");
-        window.location.reload();
+          if (result?.status === 200) {
+            Swal.fire({
+              icon: "success",
+              title: "Successful!",
+              text: "Account deleted...!",
+            });
+            navigate("/user-manage");
+            window.location.reload();
+          }
+        } catch (err) {
+          console.error(err);
+          alert(err);
+        }
       }
-    } catch (err) {
-      console.error(err);
-      alert(err);
-    }
+    });
   }
 
   async function enableProfile() {
-    try {
-      if (!window.confirm("Are you sure you want to activate this account?")) {
-        return;
-      }
+    Swal.fire({
+      title: "Are you sure you want to activate this account?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#117a2d",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, activate!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          var result = await enableUserByID(User.id);
 
-      var result = await enableUserByID(User.id);
-
-      if (result?.status === 200) {
-        Swal.fire({
-          icon: "success",
-          title: "Successful!",
-          text: "Account activated...!",
-        });
-        window.location.reload();
+          if (result?.status === 200) {
+            Swal.fire({
+              icon: "success",
+              title: "Successful!",
+              text: "Account activated...!",
+            });
+            window.location.reload();
+          }
+        } catch (err) {
+          console.error(err);
+          alert(err);
+        }
       }
-    } catch (err) {
-      console.error(err);
-      alert(err);
-    }
+    });
   }
   async function disableProfile() {
-    try {
-      if (
-        !window.confirm("Are you sure you want to deactivate this account?")
-      ) {
-        return;
-      }
+    Swal.fire({
+      title: "Are you sure you want to deactivate this account?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, deactivate!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          var result = await disableUserByID(User.id);
 
-      var result = await disableUserByID(User.id);
-
-      if (result?.status === 200) {
-        Swal.fire({
-          icon: "success",
-          title: "Successful!",
-          text: "Account deactivated...!",
-        });
-        window.location.reload();
+          if (result?.status === 200) {
+            Swal.fire({
+              icon: "success",
+              title: "Successful!",
+              text: "Account deactivated...!",
+            });
+            window.location.reload();
+          }
+        } catch (err) {
+          console.error(err);
+          alert(err);
+        }
       }
-    } catch (err) {
-      console.error(err);
-      alert(err);
-    }
+    });
   }
 
   return (

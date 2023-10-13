@@ -50,7 +50,7 @@ const Adduser = () => {
     } else {
       let newdata = await addUser(data);
       console.log(" addUser data ", newdata);
-      if (newdata?.status === 200) {
+      if (newdata?.status === 201) {
         Swal.fire({
           icon: "success",
           title: "Successful!",
@@ -113,7 +113,7 @@ const Adduser = () => {
             <form className="form-group" onSubmit={AddNewUser}>
               <label style={{ marginTop: "15px" }}>Full Name*</label>
               <input
-                className="form-control"
+                className="form-control-user"
                 name="name"
                 value={data?.name}
                 type="text"
@@ -122,7 +122,7 @@ const Adduser = () => {
 
               <label style={{ marginTop: "15px" }}>NIC*</label>
               <input
-                className="form-control"
+                className="form-control-user"
                 name="nic"
                 value={data.nic}
                 type="text"
@@ -131,20 +131,10 @@ const Adduser = () => {
 
               <label style={{ marginTop: "15px" }}>Email*</label>
               <input
-                className="form-control"
+                className="form-control-user"
                 name="email"
                 value={data?.email}
                 type="text"
-                onChange={handleChange}
-              />
-
-              <label style={{ marginTop: "15px" }}>Password*</label>
-              <input
-                className="form-control"
-                name="password"
-                minLength="6"
-                value={data.password}
-                type="password"
                 onChange={handleChange}
               />
 
@@ -152,7 +142,7 @@ const Adduser = () => {
                 <div className="col">
                   <label style={{ marginTop: "15px" }}>Address*</label>
                   <textarea
-                    className="form-control"
+                    className="form-control-user"
                     name="address"
                     value={data.address}
                     type="text"
@@ -163,7 +153,7 @@ const Adduser = () => {
 
               <label style={{ marginTop: "15px" }}>Number*</label>
               <input
-                className="form-control"
+                className="form-control-user"
                 name="number"
                 maxLength="10"
                 minLength="9"
@@ -174,7 +164,7 @@ const Adduser = () => {
 
               <label style={{ marginTop: "15px" }}>Date Of Birth*</label>
               <input
-                className="form-control"
+                className="form-control-user"
                 name="dob"
                 value={data.dob}
                 type="date"
@@ -193,6 +183,16 @@ const Adduser = () => {
                 value={selectedUserRole}
                 onChange={handleUserRoleChange}
                 options={optionUserRole}
+              />
+
+              <label style={{ marginTop: "15px" }}>Password*</label>
+              <input
+                className="form-control-user"
+                name="password"
+                minLength="6"
+                value={data.password}
+                type="password"
+                onChange={handleChange}
               />
 
               <center>

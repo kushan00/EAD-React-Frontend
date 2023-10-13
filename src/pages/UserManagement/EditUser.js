@@ -184,8 +184,8 @@ const EditUser = () => {
             <input
               className="form-control-user"
               name="dob"
-              value={moment(data.dob).format("MM/DD/YYYY")}
-              type="text"
+              value={data.dob?.toString()?.substring(0, 10)}
+              type="date"
               onChange={handleChange}
             />
 
@@ -210,7 +210,7 @@ const EditUser = () => {
                 </label>
                 <input
                   className="form-control-user"
-                  name="number"
+                  name="password"
                   value={data.password}
                   type="password"
                   onChange={handleChange}

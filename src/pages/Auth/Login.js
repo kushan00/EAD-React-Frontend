@@ -9,7 +9,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    nic: "123456789",
+    nic: "8965436789",
     password: "12345678",
   });
 

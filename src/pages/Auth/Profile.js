@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Auth, DeleteProfile } from "../../services/AuthServices";
 import Swal from "sweetalert2";
 import "./responsive.css";
-import { ValidateUserUpdate } from "./Validation";
-import { UpdateProfile } from "../../services/AuthServices";
 import Cookies from "js-cookie";
 
 const Profile = () => {
@@ -26,27 +24,35 @@ const Profile = () => {
   }
 
   async function deleteProfile() {
-    try {
-      if (!window.confirm("Are you sure you wish to delete this account?")) {
-        return;
-      }
+    Swal.fire({
+      title: "Are you sure you want to deactivate your account?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, deactivate!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          var result = await DeleteProfile(User._id);
 
-      var result = await DeleteProfile(User._id);
-
-      if (result?.status === 200) {
-        Swal.fire({
-          icon: "success",
-          title: "Successful!",
-          text: "Account deactivated...!",
-        });
-        Cookies.remove("TrainLogin");
-        navigate("/");
-        window.location.reload();
+          if (result?.status === 200) {
+            Swal.fire({
+              icon: "success",
+              title: "Successful!",
+              text: "Account deactivated...!",
+            });
+            Cookies.remove("TrainLogin");
+            navigate("/");
+            window.location.reload();
+          }
+        } catch (err) {
+          console.error(err);
+          alert(err);
+        }
       }
-    } catch (err) {
-      console.error(err);
-      alert(err);
-    }
+    });
   }
 
   return (
