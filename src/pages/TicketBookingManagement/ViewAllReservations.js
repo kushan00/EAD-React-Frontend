@@ -17,6 +17,7 @@ import { deleteReservation } from "../../services/ReservationService";
 
 import editIcon from "../../assets/images/pencil.png";
 import binIcon from "../../assets/images/bin.png";
+import moment from "moment/moment";
 
 const ViewAllReservations = () => {
 
@@ -42,6 +43,7 @@ const ViewAllReservations = () => {
           endCity: reservation?.endCity,
           paxCount: reservation?.paxCount,
           status: reservation?.status,
+          totalPrice:reservation?.totalPrice
         };
       });
       setReservationDetails(newData);
@@ -85,26 +87,10 @@ const ViewAllReservations = () => {
     {
       name: (
         <Badge color="info" style={{ fontSize: "16px" }}>
-          ID
+          bookingId
         </Badge>
       ),
       selector: "id",
-      cell: (data) => (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <Label style={{ fontSize: "16px" }}>
-            <b>{data?.id}</b>
-            <br />
-          </Label>
-        </div>
-      ),
-    },
-    {
-      name: (
-        <Badge color="info" style={{ fontSize: "16px" }}>
-          Booking ID
-        </Badge>
-      ),
-      selector: "bookingId",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "16px" }}>
@@ -117,14 +103,14 @@ const ViewAllReservations = () => {
     {
       name: (
         <Badge color="info" style={{ fontSize: "16px" }}>
-          User
+          booked Time
         </Badge>
       ),
-      selector: "user",
+      selector: "bookingId",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "16px" }}>
-            <b>{data?.user}</b>
+            <b>{moment(data?.bookedTime).format('YYYY-MMM-DD')}</b>
             <br />
           </Label>
         </div>
@@ -133,14 +119,62 @@ const ViewAllReservations = () => {
     {
       name: (
         <Badge color="info" style={{ fontSize: "16px" }}>
-          Status
+          reserve Time
+        </Badge>
+      ),
+      selector: "user",
+      cell: (data) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Label style={{ fontSize: "16px" }}>
+            <b>{moment(data?.reserveTime).format('YYYY-MMM-DD')}</b>
+            <br />
+          </Label>
+        </div>
+      ),
+    },
+    {
+      name: (
+        <Badge color="info" style={{ fontSize: "16px" }}>
+          startCity
         </Badge>
       ),
       selector: "status",
       cell: (data) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Label style={{ fontSize: "16px" }}>
-            <b>{data?.status}</b>
+            <b>{data?.startCity}</b>
+            <br />
+          </Label>
+        </div>
+      ),
+    },
+    {
+      name: (
+        <Badge color="info" style={{ fontSize: "16px" }}>
+          endCity
+        </Badge>
+      ),
+      selector: "status",
+      cell: (data) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Label style={{ fontSize: "16px" }}>
+            <b>{data?.endCity}</b>
+            <br />
+          </Label>
+        </div>
+      ),
+    },
+    {
+      name: (
+        <Badge color="info" style={{ fontSize: "16px" }}>
+          Total Price
+        </Badge>
+      ),
+      selector: "status",
+      cell: (data) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Label style={{ fontSize: "16px" }}>
+            <b>{data?.totalPrice}</b>
             <br />
           </Label>
         </div>
