@@ -24,6 +24,7 @@ import TravellerBooking from './pages/TravellerBooking';
 import Navbar from './components/Navbar/Navbar';
 import AddUserReservation from './pages/AddUserResevation';
 import UserProfile from './pages/UserManagement/UserProfile';
+import TravelerProfile from './pages/TravelerProfile';
 
 
 function SiteRoutes() {
@@ -83,6 +84,10 @@ function SiteRoutes() {
                   path="/add-user-reservation/:id"
                   element={<AddUserReservation />}
                 />
+
+                <Route path='/traveler-profile' element={<TravelerProfile/>} />
+
+
               </>
             ) : (
               <>
