@@ -46,7 +46,14 @@ const ViewAllReservations = () => {
           totalPrice:reservation?.totalPrice
         };
       });
-      setReservationDetails(newData);
+      var array = [];
+      newData?.map((item)=>{
+        if(item?.status != 2)
+        {
+          array.push(item);
+        }
+      })
+      setReservationDetails(array);
       setLoading(false);
     } catch (error) {
       console.log(error);

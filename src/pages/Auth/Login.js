@@ -31,7 +31,7 @@ const Login = () => {
         title: "Login success..!",
         text: `Login success`,
       });
-      if (data?.data?.role === "traveler") {
+      if (data?.data?.role === "Traveler") {
         navigate("/traveler-booking");
         window.location.reload();
       } else {

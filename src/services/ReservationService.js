@@ -55,16 +55,17 @@ export async function createReservation(data,scheduleID,bookedTime,reserveTime,t
   return result;
 }
 
-export async function updateReservation(id, data) {
+export async function updateReservation(id, data,bookedTime,reserveTime,totalPrice) {
   const alldata = {
     bookingId: data?.bookingId,
     user: data?.user,
     schedule: data?.schedule,
-    bookedTime: data?.bookedTime,
-    reserveTime: data?.reserveTime,
+    bookedTime: bookedTime,
+    reserveTime: reserveTime,
     startCity: data?.startCity,
     endCity: data?.endCity,
     paxCount: data?.paxCount,
+    totalPrice: totalPrice,
     status: data?.status,
   };
 

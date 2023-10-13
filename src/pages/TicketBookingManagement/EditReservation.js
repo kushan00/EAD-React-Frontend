@@ -5,12 +5,24 @@ import { CardTitle } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import moment from "moment";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import 'react-clock/dist/Clock.css';
 
 const EditReservation = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
   const [data, setData] = useState({});
+  const [reserveTime, setreserveTime] = useState("");
+  const [bookedTime, setbookedTime] = useState("");
+  const [totalPrice, settotalPrice] = useState(0);
+
+  const calculatePrice = (psgCount,price) => {
+    return parseFloat(psgCount) * parseFloat(price);
+  }
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,6 +30,13 @@ const EditReservation = () => {
       ...prevData,
       [name]: value,
     }));
+    if(name === "paxCount")
+    {
+      console.log(localStorage.getItem("price"));
+      console.log(value);
+      console.log("total Price",calculatePrice(value,localStorage.getItem("price")))
+      settotalPrice(calculatePrice(value,localStorage.getItem("price")))
+    }
   };
 
   const getSelectedReservation = async () => {
@@ -29,23 +48,25 @@ const EditReservation = () => {
       bookingId: response?.data?.bookingId,
       user: response?.data?.user,
       schedule: response?.data?.schedule,
-      bookedTime: response?.data?.bookedTime,
-      reserveTime: response?.data?.reserveTime,
       startCity: response?.data?.startCity,
       endCity: response?.data?.endCity,
       paxCount: response?.data?.paxCount,
       status: response?.data?.status,
     });
+    settotalPrice(response?.data?.totalPrice);
+    setreserveTime(moment(response?.data?.reserveTime).format("YYYY-MM-DD : HH:mm"));
+    setbookedTime(moment(response?.data?.bookedTime).format("YYYY-MM-DD : HH:mm"));
   };
 
   useEffect(() => {
     getSelectedReservation();
   }, []);
 
+
   const editReservation = async (e) => {
     e.preventDefault();
     console.log(data);
-    let response = await updateReservation(id, data); // Replace with your service function to update a reservation
+    let response = await updateReservation(id, data,bookedTime,reserveTime,totalPrice); // Replace with your service function to update a reservation
     console.log("Update reservation data", response);
     if (response?.status === 204) {
       Swal.fire({
@@ -62,6 +83,23 @@ const EditReservation = () => {
         text: "Update Failed!",
       });
     }
+  };
+
+  const divStyle = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "300px", // Adjust the width as needed
+    margin: "0 auto", // Center the content horizontally
+  };
+
+  const dateStyle = {
+    flex: 1,
+    marginRight: "10px", // Adjust the spacing between date and time picker
+  };
+
+  const labelStyle = {
+    fontWeight: "bold",
   };
 
   return (
@@ -97,9 +135,10 @@ const EditReservation = () => {
                   value={data?.bookingId}
                   type="text"
                   onChange={handleChange}
+                  readOnly
                 />
 
-                <label style={{ marginTop: "15px" }}>User</label>
+                {/* <label style={{ marginTop: "15px" }}>User</label>
                 <input
                   className="form-control"
                   name="user"
@@ -115,24 +154,22 @@ const EditReservation = () => {
                   value={data?.schedule}
                   type="text"
                   onChange={handleChange}
-                />
+                /> */}
 
-                <label style={{ marginTop: "15px" }}>Booked Time</label>
+                <label style={{ marginTop: "15px" }}>Booked Date & Time</label>
                 <input
                   className="form-control"
-                  name="bookedTime"
-                  value={data?.bookedTime}
+                  value={bookedTime}
                   type="text"
-                  onChange={handleChange}
+                  readOnly
                 />
 
-                <label style={{ marginTop: "15px" }}>Reserve Time</label>
+                <label style={{ marginTop: "15px" }}>Reserve Date & Time</label>
                 <input
                   className="form-control"
-                  name="reserveTime"
-                  value={data?.reserveTime}
+                  value={reserveTime}
                   type="text"
-                  onChange={handleChange}
+                  readOnly
                 />
 
                 <label style={{ marginTop: "15px" }}>Start City</label>
@@ -142,6 +179,7 @@ const EditReservation = () => {
                   value={data?.startCity}
                   type="text"
                   onChange={handleChange}
+                  readOnly
                 />
 
                 <label style={{ marginTop: "15px" }}>End City</label>
@@ -151,6 +189,7 @@ const EditReservation = () => {
                   value={data?.endCity}
                   type="text"
                   onChange={handleChange}
+                  readOnly
                 />
 
                 <label style={{ marginTop: "15px" }}>Passenger Count</label>
@@ -162,14 +201,22 @@ const EditReservation = () => {
                   onChange={handleChange}
                 />
 
-                <label style={{ marginTop: "15px" }}>Status</label>
+                <label style={{ marginTop: "15px" }}>Total Price</label>
+                <input
+                  className="form-control"
+                  value={totalPrice}
+                  type="text"
+                  readOnly
+                />
+
+                {/* <label style={{ marginTop: "15px" }}>Status</label>
                 <input
                   className="form-control"
                   name="status"
                   value={data?.status}
                   type="text"
                   onChange={handleChange}
-                />
+                /> */}
 
                 <center>
                   <br></br>

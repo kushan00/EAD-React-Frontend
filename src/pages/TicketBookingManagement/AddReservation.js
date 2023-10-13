@@ -47,7 +47,7 @@ const AddReservation = () => {
 
   const formatDate = (date, time) => {
     const formattedDate = date ? date.toISOString().split("T")[0] : "";
-    return `${formattedDate}T${time}:00.000Z`;
+    return `${formattedDate}T${time}`;
   };
 
   const handleUserChange = (selectedOption) => {
@@ -66,7 +66,7 @@ const AddReservation = () => {
 
         let newData = [];
          data?.data?.map((user) => {
-          if(user?.userRole === "traveler")
+          if(user?.userRole === "Traveler")
             {
                 newData.push({
                   name: user?.name,
