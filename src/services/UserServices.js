@@ -3,7 +3,7 @@ import axios from "axios";
 import StartUrl from "../configs/Url.json";
 
 const AddUserURL = StartUrl?.StartUrl + "/Account";
-const GetAllUsersURL = StartUrl?.StartUrl + "/Account";
+const GetAllUsersURL = StartUrl?.StartUrl + "/Account/users";
 const GetAllTravelersURL = StartUrl?.StartUrl + "/Account/travelers";
 const GetUserByIdURL = StartUrl?.StartUrl + "/Account/";
 const UpdateUserByIdURL = StartUrl?.StartUrl + "/Account/";
