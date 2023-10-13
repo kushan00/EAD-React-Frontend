@@ -112,31 +112,6 @@ const TravelerProfile = () => {
               <CardBody>
                 <div style={{ width: "600px" }}>
                   <br />
-                  <div>
-                    <table
-                      className="table table-stripe-light"
-                      style={{
-                        fontSize: "20px",
-                        color: "#1591b0",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      <tr>
-                        <th>User ID</th>
-                        <th>User Role</th>
-                        <th>User Status</th>
-                      </tr>
-                      <tr>
-                        <td>{UserData?.uid}</td>
-                        <td>{User?.userRole}</td>
-                        <td>
-                          {User?.status == null
-                            ? "No special Status to Show"
-                            : User?.status}
-                        </td>
-                      </tr>
-                    </table>
-                  </div>
                   <br />
                   <Form className="form">
                     <div className="form-group">
